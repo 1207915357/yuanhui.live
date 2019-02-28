@@ -1,25 +1,90 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('@/views/home/home.vue'),
+       meta: {
+         title: '看不见的城'
+       }
     },
     {
       path: '/about',
       name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    }
+      component: () => import('@/views/about.vue'),
+       meta: {
+         title: '关于作者'
+       }
+    },
+    {
+      path: '/life',
+      name: 'life',
+      component: () => import('@/views/life.vue'),
+       meta: {
+        title: '生活'
+      }
+    },
+    {
+      path: '/msg',
+      name: 'msg',
+      component: () => import('@/views/msg.vue'),
+       meta: {
+        title: '留言'
+      }
+    },
+    {
+      path: '/manage/publish',
+      name: 'publish',
+      component: () => import('@/views/manage/publish.vue'),
+       meta: {
+        title: '文章发布'
+      }
+    },
+    {
+      path: '/manage/video',
+      name: 'video',
+      component: () => import('@/views/manage/video.vue'),
+       meta: {
+        title: '视频发布'
+      }
+    },
+     {
+       path: '/manage/articleManage',
+       name: 'articleManage',
+       component: () => import('@/views/manage/articleManage.vue'),
+       meta: {
+         title: '文章管理'
+       }
+     },
+    {
+      path: '/home/articleDel/:id',
+      name: 'articleDel',
+      component: () => import('@/views/home/articleDel.vue'),
+      meta: {
+        title: '文章详情'
+      }
+    },
+   
   ]
 })
+
+
+// 路由变化时
+router.beforeEach((to, from, next) => {
+  if (document.title !== to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next()
+})
+
+
+
+export default router
