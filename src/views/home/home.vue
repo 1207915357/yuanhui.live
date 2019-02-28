@@ -4,11 +4,11 @@
       <siderBar></siderBar>
     </div>
     <div class="articleBox" >
-      <articleBlog v-for="(item,index) in articleList" 
-                  :key="index" 
-                  :article="item"
-                  @click.native='turnTo(item.id)'>
-      </articleBlog>
+        <articleBlog v-for="(item,index) in articleList" 
+                    :key="index" 
+                    :article="item"
+                    @click.native='turnTo(item.id)'>
+        </articleBlog>
     </div>
   </div>
 </template>
@@ -64,10 +64,12 @@
   .home{
     display: flex;
     .articleBox{
-      flex: 4;
+      flex: 1;
+      margin-left: 260px;
     }
     .authorInfo{
-      flex: 1;
+      width: 260px;
+      position: fixed;
     }
   }
 </style>

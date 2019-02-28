@@ -6,7 +6,6 @@
     <div class='articleContent'>
       <editor :isResolve="true" :value="articleDel.value"></editor>
     </div>
-
     <div class="siderBtn">
       <el-badge :value="articleDel.like" class="item">
         <el-button @click='giveLike(articleDel.id)' type="info" class="myicon" icon="iconfont icon-dianzan" circle></el-button>
@@ -43,6 +42,8 @@
           console.log(data)
           if(data.code===1){
             this.lookArticleDel(this.$route.params.id)
+          }else if(data.code===201){
+            this.$message.info('请先登录!')
           }
         })
       },
@@ -73,16 +74,15 @@
 <style lang='less' scoped>
   .articleDel{
     background: #fff;
-    padding: 20px 40px;
-    position: relative;
+    padding: 20px 20px 20px 80px;
     .delTitle{
       text-align: center;
       padding:20px 
     }
-    .siderBtn{
-    position: absolute;
-    top: 100px;
-    left: -60px;
+  .siderBtn{
+    position: fixed;
+    top: 30%;
+    left: calc(50% - 666px);
     .myicon{
       margin-bottom: 15px;
     }

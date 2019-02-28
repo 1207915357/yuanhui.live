@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <head-nav class="headNav"></head-nav>
-    <div class="layout">
-      <router-view />
-    </div>
+    <vue-scroll style="height: calc(100% - 61px);"> 
+      <div class="layout">
+        <router-view />
+      </div>
+    </vue-scroll>
   </div>
 </template>
 <script>
@@ -35,15 +37,11 @@
     height: 100%;
     .headNav{
       width: 100%;
-      position: fixed;
-      top: 0;
-      z-index: 9999;
     }
   }
  .layout {
-    padding-top: 61px;
     width: 1200px;
-    height: 100% ;
+    height: calc(100vh - 61px);
     margin: 0 auto;
   }
 
