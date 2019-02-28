@@ -1,0 +1,70 @@
+/* css初始化 */
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0} 
+body{font:14px"宋体","Arial Narrow",HELVETICA;background:#fff;-webkit-text-size-adjust:100%;} 
+a{color:#2d374b;text-decoration:none} 
+a:hover{color:#cd0200;text-decoration:underline} 
+em{font-style:normal} 
+li{list-style:none} 
+img{border:0;vertical-align:middle} 
+table{border-collapse:collapse;border-spacing:0} 
+p{word-wrap:break-word} 
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+
+html{height: 100%;}
+html *{ box-sizing: border-box;}
+body{
+    height: 100%;
+    background: #ccc;
+}
+/* iconfont svg color */
+/* path { fill: inherit !important }  */
+
+
+/* element */
+.el-menu.el-menu--horizontal{
+    border-bottom: none;
+}
+
+.articleTitle  .el-input__inner{
+    border-radius: 0px;
+}
+.el-dropdown-menu.coverDropdown {
+        top: 86px!important;
+        left: 910px !important;
+}
+.el-popper.coverDropdown .popper__arrow {
+        border-bottom-color: #ddd;
+        left: 108px!important;
+        top: 4px!important;
+}
+/* markdown */
+ .hljs {
+     font-size: 16px !important;
+ }
+ .v-note-wrapper .v-note-panel {
+     border: none !important;
+ }
+ .v-note-wrapper.fullscreen{
+     z-index: 10000!important;
+ }
+
+
+ /* common class */
+ .float-l{
+     float: left;
+ }
+ .float-r{
+     float: right;
+ }
+ .clearfix:after,.clearfix:bofore{
+     content:'.';
+     display:'block';
+     clear: both;
+     height: 0;
+     visibility: hidden;
+ }
+ .clearfix {
+     *zoom:1;
+ }
+ 

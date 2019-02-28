@@ -1,0 +1,107 @@
+<template>
+    <div id="headNav">
+      <div class="navContent">
+        <!-- <div class="logo">看不见的城</div> -->
+        <el-menu :default-active="currentRouter" class="el-menu-demo" :router="true" mode="horizontal"
+          menu-trigger="hover" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-menu-item index="/">
+            <i class="iconfont icon-shouye1 myicon"></i>
+            <span>首页</span>
+          </el-menu-item>
+          <el-menu-item index="/life">
+            <i class="iconfont icon-airudiantubiaohuizhi-zhuanqu_tiyushijie myicon"></i>
+            <span>生活</span>
+          </el-menu-item>
+          <el-menu-item index="/msg">
+            <i class="iconfont icon-liuyan myicon"></i>
+            <span>留言</span>
+          </el-menu-item>
+          <el-menu-item index="/about">
+            <i class="iconfont icon-guanyuwomen myicon"></i>
+            <span>关于</span>
+          </el-menu-item>
+          <el-submenu index="/manage">
+            <template slot="title">
+              <i class="iconfont icon-guanli myicon" style="font-size:16px"></i>
+              <span>管理</span>
+            </template>
+            <el-menu-item index="/manage/publish"><span class="iconfont icon-wenzhang myicon"></span><span>发布博客</span></el-menu-item>
+            <el-menu-item index="/manage/video"><span class="iconfont icon-shipin-m myicon"></span><span>发布视频</span></el-menu-item>
+            <el-menu-item index="/manage/articleManage"><span class="iconfont icon-caogaoxiang myicon"></span><span>文章管理</span></el-menu-item>
+          </el-submenu>
+        </el-menu>
+        <login></login>
+      </div>
+    </div>
+</template>
+<script>
+  import login from '@/components/login.vue'
+  export default {
+    name: "headNav",
+    components:{
+      login
+    },
+    data() {
+      return {
+        currentRouter: window.location.pathname,
+      };
+    },
+    //  watch:{
+    //   '$route':function(nowR,oldR){
+    //      this.currentRouter=nowR.path;
+    //     //  console.log(this.currentRouter,'this')
+    //   }
+    // },
+    methods: {
+      
+    },
+    mounted(){
+    }
+  };
+
+</script>
+<style lang="less">
+  #headNav {
+    height: 61px;
+    background-color: #545c64;
+    // border-bottom: solid 1px #e6e6e6;
+    .navContent{
+      position: relative;
+      width: 1200px;
+      margin: 0 auto;
+      .userbox {
+        position: absolute;
+        right: 50px;
+        top: 10px;
+      }
+      .logo{
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        z-index: 2;
+      }
+    }
+    .el-menu-demo {
+      padding-left: 200px;
+    }
+    .el-menu-item.is-active .myicon{
+    color: #ffd04b;
+    }
+    .myicon {
+        margin-right: 10px;
+        font-size: 20px;
+        color: #eee;
+    }
+  }
+ .el-dialog{
+      width: 400px!important;
+      .el-dialog__body {
+      padding: 20px 20px 0 20px;
+      }
+  }
+  .el-menu-item .myicon{
+    margin-right: 10px;
+    font-size: 20px;
+    color: #eee;
+  }
+</style>
