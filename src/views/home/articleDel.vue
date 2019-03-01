@@ -1,29 +1,40 @@
 <template>
   <div class="articleDel">
+    <!-- 详情 -->
     <h1 class="delTitle">{{articleDel.title}}</h1>
     <!-- <div v-html='articleDel.value'></div> -->
     <!-- 解析markdown源码 -->
     <div class='articleContent'>
       <editor :isResolve="true" :value="articleDel.value"></editor>
     </div>
+
+    <!-- 点赞按钮 -->
     <div class="siderBtn">
       <el-badge :value="articleDel.like" class="item">
         <el-button @click='giveLike(articleDel.id)' type="info" class="myicon" icon="iconfont icon-dianzan" circle></el-button>
       </el-badge>
       <br/>
-      <el-badge :value="12" class="item">
-        <el-button type="info" class="myicon" icon="iconfont icon-pinglun" circle></el-button>
-      </el-badge>
+      <a href="#comments-list">
+        <el-badge :value="12" class="item">
+          <el-button type="info" class="myicon" icon="iconfont icon-pinglun" circle></el-button>
+        </el-badge>
+      </a>
     </div>
+
+    <!-- 评论 -->
+    <my-comments id='comments-list'></my-comments>
+
   </div>
 </template>
 
 <script>
   import editor from '@/components/editor.vue'
+  import MyComments from '@/components/MyComments.vue'
   export default {
     name:'articleDel',
     components:{
-      editor
+      editor,
+      MyComments
     },
     data () {
       return {
@@ -74,7 +85,7 @@
 <style lang='less' scoped>
   .articleDel{
     background: #fff;
-    padding: 20px 20px 20px 80px;
+    padding: 20px;
     .delTitle{
       text-align: center;
       padding:20px 

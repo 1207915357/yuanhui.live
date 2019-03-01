@@ -31,7 +31,8 @@ body{
 }
 .el-dropdown-menu.coverDropdown {
         top: 86px!important;
-        left: 910px !important;
+        transform: translateX(-140px);
+        border: none;
 }
 .el-popper.coverDropdown .popper__arrow {
         border-bottom-color: #ddd;

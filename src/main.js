@@ -15,6 +15,7 @@ Vue.prototype.$api = api; // 将api挂载到vue的原型上
 Vue.use(vuescroll, {
   ops: {
     bar: {
+      keepShow: true,
       background: '#545c64',
     }
   }, // 在这里设置全局默认配置
