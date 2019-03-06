@@ -6,61 +6,62 @@
             <img src="" alt="">
         </div>
         <div class="form-box">
-            <el-input type="textarea" :rows="2" v-model="formBoxVal" placeholder="输入评论..."></el-input>
+            <el-input type="textarea" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
             <div class="actoin-box">
                 <div class="emoji">表情</div>
                 <div class="submit">
-                    <el-button size='small' type='primary'>评论</el-button>
+                    <el-button @click="commentArticle()" size='small' type='primary'>评论</el-button>
                 </div>
             </div>
         </div>
     </div>
     <div class="comments-list">
-        <div class="item" v-for="(item,index) in [1,2,3]" :key="index">
+        <div class="item" v-for="(item,index) in commentList" :key="index">
             <div class="comment">
                 <div class="comment-avatar">
                     <img src="" alt="">
                 </div>
                 <div class="content-box">
                     <div class="userInfo-box">
-                        <h3 class="userName">球球</h3>
-                        <p class="comment-time">2019-3-1</p>
+                        <h3 class="userName">{{item.user.userName}}</h3>
+                        <!-- <p class="comment-time">{{formatTime(item.created_time,'YYYY-MM-DD hh:mm:ss')}}</p> -->
+                        <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                     </div>
                     <div class="content">
-                        <p class="content-text">评论的内容</p>
+                        <p class="content-text">{{item.content}}</p>
                         <el-button @click='replyComment(index)' size='mini' class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                     </div>
                     
                     <div class="form-box" v-if="!showSubFormBox&&currentIndex==index">
-                        <el-input type="textarea" :rows="2" v-model="formBoxVal" placeholder="输入评论..."></el-input>
+                        <el-input type="textarea" :rows="2" v-model="sub_formBoxVal" :placeholder="`回复${item.user.userName}...`"></el-input>
                         <div class="actoin-box">
                             <div class="emoji">表情</div>
                             <div class="submit">
-                                <el-button size='small' type='primary'>评论</el-button>
+                                <el-button @click="subComment(item.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
                             </div>
                         </div>
                     </div>
-                    <!-- 回复评论 -->
-                    <div class="sub-comment" v-for="(item2,index2) in [1,2,3]" :key="index2">
+                    <!-- 子评论 -->
+                    <div class="sub-comment" v-for="(item2,index2) in item.sub_comment" :key="index2">
                         <div class="comment-avatar">
                             <img src="" alt="">
                         </div>
                         <div class="content-box">
                             <div class="userInfo-box">
-                                <h3 class="userName">贝贝</h3>
-                                <span class="comment-time">2019-3-1</span>
+                                <h3 class="userName">{{item2.user.userName}}</h3>
+                                <span class="comment-time">{{formatTimeToNow(item2.created_time)}}</span>
                             </div>
                             <div class="content">
-                                <p class="content-text">回复<i class="reply-user">球球:</i></p>
-                                <p class="content-text">评论的内容</p>
+                                <p class="content-text">回复<i class="reply-user">{{item2.toUser.userName}}:</i></p>
+                                <p class="content-text">{{item2.content}}</p>
                                 <el-button size='mini' @click="replySubComment(index,index2)" class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                             </div>
                             <div class="form-box" v-if="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
-                                <el-input type="textarea" :rows="2" v-model="formBoxVal" placeholder="输入评论..."></el-input>
+                                <el-input type="textarea" :rows="2" v-model="sub_formBoxVal" :placeholder="`回复${item2.user.userName}...`"></el-input>
                                 <div class="actoin-box">
                                     <div class="emoji">表情</div>
                                     <div class="submit">
-                                        <el-button size='small' type='primary'>评论</el-button>
+                                        <el-button @click="subComment(item2.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
                                     </div>
                                 </div>
                             </div>
@@ -79,14 +80,31 @@
     name:'myComments',
     data () {
       return {
-          formBoxVal:"",
+          top_formBoxVal:"", 
+          sub_formBoxVal:"", 
           currentIndex:-1,
           currentSubIndex:-1,
           showSubFormBox:false,
       };
     },
-
+    props:{
+        commentList:{
+            type:Array
+        }
+    },
+     computed: {
+      userId(){
+        return this.$store.state.userId
+      }
+    },
     methods: {
+        restFormBox(){
+          this.currentIndex=-1
+          this.currentSubIndex=-1
+          this.showSubFormBox=false
+          this.top_formBoxVal = ''
+          this.sub_formBoxVal = ''
+        },
         replyComment(index){
             this.showSubFormBox =  false;
             this.currentIndex = index;
@@ -95,6 +113,35 @@
             this.showSubFormBox =  true;
             this.currentIndex = index;
             this.currentSubIndex = index2;
+        },
+        //评论
+        commentArticle(){
+            this.$api.article.commentArticle({
+                userId:this.userId,
+                articleId:this.$route.params.id,
+                content:this.top_formBoxVal,
+            }).then(data=>{
+                if(data.code===1){
+                    this.restFormBox()
+                    this.$parent.lookArticleDel(this.$route.params.id)
+                }
+            })
+        },
+
+         //子评论
+        subComment(toUserId,commentId){
+            this.$api.article.subCommentArticle({
+                userId:this.userId,
+                toUserId:toUserId,
+                articleId:this.$route.params.id,
+                commentId:commentId,
+                content:this.sub_formBoxVal,
+            }).then(data=>{
+                 if(data.code===1){
+                    this.restFormBox()
+                    this.$parent.lookArticleDel(this.$route.params.id)
+                }
+            })
         }
     },
 
@@ -116,9 +163,9 @@
         display: flex;
     }
      .avatar-box{
-        margin: 0 1rem 0 0;
-        width: 2.667rem;
-        height: 2.667rem;
+        margin: 0 15px 0 0;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         background: #8a9aa9;
      }
@@ -146,9 +193,9 @@
              .comment{
                  display: flex;
                  .comment-avatar{
-                    margin: 0 1rem 0 0;
-                    width: 2.667rem;
-                    height: 2.667rem;
+                    margin: 0 15px 0 0;
+                     width: 50px;
+                    height: 50px;
                     border-radius: 50%;
                     background: #8a9aa9;
                  }
@@ -157,7 +204,7 @@
                      .userInfo-box{
                          display: flex;
                          .userName{color:#406599;}
-                         .comment-time{margin: 0 20px;line-height: 21px;}
+                         .comment-time{margin: 0 20px;line-height: 21px;color:#8a9aa9;}
                          .replyBtn{margin-left:auto;}
                      }
                      .content{

@@ -26,8 +26,17 @@ const article = {
   articleDraft(params) {
     return axios.post(`${base.dev}/article/articleDraft`, qs.stringify(params));
   },
+  //点赞
   giveLike(params) {
     return axios.post(`${base.dev}/article/giveLike`, qs.stringify(params));
+  },
+  //评论
+  commentArticle(params) {
+    return axios.post(`${base.dev}/article/comment`, qs.stringify(params));
+  },
+  //子评论
+  subCommentArticle(params) {
+    return axios.post(`${base.dev}/article/subComment`, qs.stringify(params));
   },
 }
 

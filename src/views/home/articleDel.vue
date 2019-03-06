@@ -11,18 +11,18 @@
     <!-- 点赞按钮 -->
     <div class="siderBtn">
       <el-badge :value="articleDel.like" class="item">
-        <el-button @click='giveLike(articleDel.id)' type="info" class="myicon" icon="iconfont icon-dianzan" circle></el-button>
+        <el-button @click='giveLike(articleDel.articleId)' type="info" class="myicon" icon="iconfont icon-dianzan" circle></el-button>
       </el-badge>
       <br/>
-      <a href="#comments-list">
-        <el-badge :value="12" class="item">
+      <a href="#myComment">
+        <el-badge :value="articleDel.comments" class="item">
           <el-button type="info" class="myicon" icon="iconfont icon-pinglun" circle></el-button>
         </el-badge>
       </a>
     </div>
 
     <!-- 评论 -->
-    <my-comments id='comments-list'></my-comments>
+    <my-comments id="myComment" :commentList='articleDel.commentList'></my-comments>
 
   </div>
 </template>
@@ -36,10 +36,14 @@
       editor,
       MyComments
     },
+    computed: {
+      userId(){
+        return this.$store.state.userId
+      }
+    },
     data () {
       return {
         articleDel:{},
-        userId:this.getCookie('userId')
       };
     },
 
@@ -63,7 +67,7 @@
       lookArticleDel(id){
          this.$api.article.articleDel({
            type:"article",
-           id:id
+           articleId:id
          })
         .then((data)=>{
           console.log(data)
@@ -72,6 +76,8 @@
           }
         })
       },
+
+      
      
     },
 

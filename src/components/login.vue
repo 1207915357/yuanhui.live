@@ -125,8 +125,10 @@
                 this.$message.success('登陆成功！')
                 this.userName = data.data.userName
                 this.userId = data.data.userId
-                this.setCookie("userName",this.userName,1)             
-                this.setCookie("userId",this.userId,1)             
+                this.$_setCookie("userName",this.userName,1)             
+                this.$_setCookie("userId",this.userId,1)  
+                this.$store.commit('handleUserId')  
+                console.log(this.$store.state.userId,'store')         
                 // this.$root.Bus.$emit('userId',this.userId)
                 // console.log(this.$root,'root')
               }else if(data.code===300){
@@ -152,17 +154,10 @@
               console.log(data)
               if(data.code===1){
                 this.$message.success('注册成功！') 
-                this.userName = data.data.userName;  
-                this.userId = data.data.userId;  
-                this.setCookie("userName",userName,1)             
-                this.setCookie("userId",userId,1)    
-                // this.$root.Bus.$emit('userId',this.userId)
-
               }else if(data.code===300){
                 this.$message.error('用户名已被注册！')                                
               }
             })
-
           } else {
             return false;
           }
@@ -171,37 +166,22 @@
 
        //退出登陆
       loginout(){
-        this.setCookie("userName",this.userName,0)
-        this.setCookie("userId",this.userId,0)
+        this.$_setCookie("userName",this.userName,0)
+        this.$_setCookie("userId",this.userId,0)
+        this.$store.commit('handleUserId')
         this.userName = ''
       },
       //检查是否已经登陆
       checkCookie(){
-          var user= this.getCookie("userName");
-          var id= this.getCookie("userId");
+          var user= this.$_getCookie("userName");
+          var id= this.$_getCookie("userId");
           if (user) {
             this.userName = user
             this.userId = id
+            this.$store.commit('handleUserId')  
             // this.$root.Bus.$emit('userId',this.userId)
           }
       },
-      
-      setCookie(cname,cvalue,exdays){
-          var d = new Date();
-          d.setTime(d.getTime()+(exdays*24*60*60*1000));
-          var expires = "expires="+d.toGMTString();
-          document.cookie = cname+"="+cvalue+"; "+expires;
-      },
-
-      // getCookie(cname){
-      //     var name = cname + "=";
-      //     var ca = document.cookie.split(';');
-      //     for(var i=0; i<ca.length; i++) {
-      //         var c = ca[i].trim();
-      //         if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
-      //     }
-      //     return "";
-      // }
 
     },
     mounted(){

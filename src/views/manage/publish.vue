@@ -93,7 +93,7 @@
       updateArticle(){
         this.$api.article.updateArticle(
           {
-            id:this.articleId,
+            articleId:this.articleId,
             value:this.mdCode,
             title:this.title,
             pictureUrl:this.pictureUrl,
@@ -126,7 +126,7 @@
       //保存为草稿
       saveDraft(){
          this.$api.article.articleDraft({
-              id:this.articleId,
+              articleId:this.articleId,
               value:this.mdCode,
               title:this.title,
               pictureUrl:this.pictureUrl,

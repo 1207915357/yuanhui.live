@@ -24,6 +24,7 @@
     },
     mounted(){
       //this.$router.push({path:this.currentRouter})
+      
     }
   };
 

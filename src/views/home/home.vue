@@ -7,7 +7,7 @@
         <articleBlog v-for="(item,index) in articleList" 
                     :key="index" 
                     :article="item"
-                    @click.native='turnTo(item.id)'>
+                    @click.native='turnTo(item.articleId)'>
         </articleBlog>
     </div>
   </div>
