@@ -32,5 +32,6 @@ new Vue({
   data:{
     Bus: new Vue()
   },
+  
   render: h => h(App)
 }).$mount('#app')

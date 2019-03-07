@@ -39,7 +39,8 @@
     computed: {
       userId(){
         return this.$store.state.userId
-      }
+      },
+     
     },
     data () {
       return {

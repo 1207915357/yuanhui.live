@@ -3,12 +3,16 @@
     <h3 class="comments-title">评论</h3>
     <div class="comments-form">
         <div class="avatar-box">
-            <img src="" alt="">
+            <!-- <img src="" alt=""> -->
+            <avatar v-if='userName' :username="userName"></avatar>
+            <i v-else class="defaultAvatar iconfont icon-touxiang"></i>
         </div>
         <div class="form-box">
             <el-input type="textarea" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
             <div class="actoin-box">
-                <div class="emoji">表情</div>
+                <div class="emojiWrap">
+                    <emojiBox class="emojiBox"></emojiBox>
+                </div>
                 <div class="submit">
                     <el-button @click="commentArticle()" size='small' type='primary'>评论</el-button>
                 </div>
@@ -19,7 +23,8 @@
         <div class="item" v-for="(item,index) in commentList" :key="index">
             <div class="comment">
                 <div class="comment-avatar">
-                    <img src="" alt="">
+                    <!-- <img src="" alt=""> -->
+                    <avatar :username="item.user.userName"></avatar>
                 </div>
                 <div class="content-box">
                     <div class="userInfo-box">
@@ -33,7 +38,7 @@
                     </div>
                     
                     <div class="form-box" v-if="!showSubFormBox&&currentIndex==index">
-                        <el-input type="textarea" :rows="2" v-model="sub_formBoxVal" :placeholder="`回复${item.user.userName}...`"></el-input>
+                        <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item.user.userName}...`"></el-input>
                         <div class="actoin-box">
                             <div class="emoji">表情</div>
                             <div class="submit">
@@ -44,7 +49,8 @@
                     <!-- 子评论 -->
                     <div class="sub-comment" v-for="(item2,index2) in item.sub_comment" :key="index2">
                         <div class="comment-avatar">
-                            <img src="" alt="">
+                            <!-- <img src="" alt=""> -->
+                            <avatar :username="item2.user.userName"></avatar>
                         </div>
                         <div class="content-box">
                             <div class="userInfo-box">
@@ -57,7 +63,7 @@
                                 <el-button size='mini' @click="replySubComment(index,index2)" class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                             </div>
                             <div class="form-box" v-if="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
-                                <el-input type="textarea" :rows="2" v-model="sub_formBoxVal" :placeholder="`回复${item2.user.userName}...`"></el-input>
+                                <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item2.user.userName}...`"></el-input>
                                 <div class="actoin-box">
                                     <div class="emoji">表情</div>
                                     <div class="submit">
@@ -75,9 +81,23 @@
 </template>
 
 <script>
-
+ //头像插件
+  import Avatar from 'vue-avatar';
+  import emojiBox from '@/components/emojiBox.vue'
   export default {
     name:'myComments',
+    components:{
+        Avatar,
+        emojiBox
+    },
+    computed: {
+      userId(){
+        return this.$store.state.userId
+      },
+        userName(){
+        return this.$store.state.userName
+        }
+    },
     data () {
       return {
           top_formBoxVal:"", 
@@ -85,17 +105,13 @@
           currentIndex:-1,
           currentSubIndex:-1,
           showSubFormBox:false,
+        //   showEmojiBox:false,
       };
     },
     props:{
         commentList:{
             type:Array
         }
-    },
-     computed: {
-      userId(){
-        return this.$store.state.userId
-      }
     },
     methods: {
         restFormBox(){
@@ -151,6 +167,12 @@
 
 </script>
 <style lang='less' scoped>
+    .defaultAvatar{
+        text-align: center;
+        line-height: 50px;
+        font-size: 50px;
+        color: #8a9aa9;
+    }
     .comments-title{
         color: #8a9aa9;
         font-size: 18px;
@@ -167,7 +189,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        background: #8a9aa9;
+        // background: #8a9aa9;
      }
     .form-box{
        flex: 1;
@@ -175,8 +197,13 @@
         .actoin-box{
             display: flex;
             margin-top: 10px;
-            .emoji{
-                
+            .emojiWrap{
+                position: relative;
+                 .emojiBox{
+                    position: absolute;
+                    top: 0px;
+                    left: 0;
+                }
             }
             .submit{
                 margin-left: auto;
@@ -197,7 +224,7 @@
                      width: 50px;
                     height: 50px;
                     border-radius: 50%;
-                    background: #8a9aa9;
+                    // background: #8a9aa9;
                  }
                  .content-box{
                      flex: 1;
@@ -238,4 +265,6 @@
     .content-box .sub-comment:not(:last-child){
              border-bottom: 1px solid #f1f1f1;
     }
+
+   
 </style>

@@ -128,6 +128,7 @@
                 this.$_setCookie("userName",this.userName,1)             
                 this.$_setCookie("userId",this.userId,1)  
                 this.$store.commit('handleUserId')  
+                this.$store.commit('handleUserName')  
                 console.log(this.$store.state.userId,'store')         
                 // this.$root.Bus.$emit('userId',this.userId)
                 // console.log(this.$root,'root')
@@ -169,6 +170,7 @@
         this.$_setCookie("userName",this.userName,0)
         this.$_setCookie("userId",this.userId,0)
         this.$store.commit('handleUserId')
+        this.$store.commit('handleUserName')
         this.userName = ''
       },
       //检查是否已经登陆
@@ -179,6 +181,7 @@
             this.userName = user
             this.userId = id
             this.$store.commit('handleUserId')  
+            this.$store.commit('handleUserName')  
             // this.$root.Bus.$emit('userId',this.userId)
           }
       },
