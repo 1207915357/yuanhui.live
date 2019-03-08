@@ -11,7 +11,7 @@
             <el-input type="textarea" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
             <div class="actoin-box">
                 <div class="emojiWrap">
-                    <emojiBox class="emojiBox"></emojiBox>
+                    <emojiBox @getEmoji='getEmoji($event,1)' class="emojiBox"></emojiBox>
                 </div>
                 <div class="submit">
                     <el-button @click="commentArticle()" size='small' type='primary'>评论</el-button>
@@ -40,7 +40,9 @@
                     <div class="form-box" v-if="!showSubFormBox&&currentIndex==index">
                         <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item.user.userName}...`"></el-input>
                         <div class="actoin-box">
-                            <div class="emoji">表情</div>
+                             <div class="emojiWrap">
+                                <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
+                            </div>
                             <div class="submit">
                                 <el-button @click="subComment(item.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
                             </div>
@@ -65,7 +67,9 @@
                             <div class="form-box" v-if="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
                                 <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item2.user.userName}...`"></el-input>
                                 <div class="actoin-box">
-                                    <div class="emoji">表情</div>
+                                    <div class="emojiWrap">
+                                        <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
+                                    </div>
                                     <div class="submit">
                                         <el-button @click="subComment(item2.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
                                     </div>
@@ -105,7 +109,7 @@
           currentIndex:-1,
           currentSubIndex:-1,
           showSubFormBox:false,
-        //   showEmojiBox:false,
+        //   emojiNative:"",
       };
     },
     props:{
@@ -132,6 +136,10 @@
         },
         //评论
         commentArticle(){
+            if(!this.userId){
+                this.$message.info('请先登录!')
+                return
+            }
             this.$api.article.commentArticle({
                 userId:this.userId,
                 articleId:this.$route.params.id,
@@ -158,7 +166,14 @@
                     this.$parent.lookArticleDel(this.$route.params.id)
                 }
             })
-        }
+        },
+        getEmoji(emoji,type){
+            if(type===1){
+                this.top_formBoxVal += emoji
+            }else{
+                this.sub_formBoxVal += emoji
+            }
+        },
     },
 
     mounted() {},

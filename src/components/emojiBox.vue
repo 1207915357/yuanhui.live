@@ -1,7 +1,11 @@
 <template>
   <div class="emojiBox">
-    <span class="emo-btn" @click='showEmojiBox = true'>表情</span>
-    <picker v-show='showEmojiBox' set="emojione" @select="selectEmoji" />
+    <i class="emo-btn iconfont icon-biaoqing-copy-copy-copy" @click='showEmojiBox = true'></i>
+    <picker v-show='showEmojiBox' 
+            set="apple" 
+            :showSkinTones='false'
+            title='Welcome to yuanhui.live'
+            @select="selectEmoji" />
   </div>
 </template>
 
@@ -22,7 +26,7 @@
           // 点击其他不在的区域触发事件
         document.addEventListener('click', (e) => {
             // console.log(e,this.$el)
-            console.log(this.$el.contains(e.target));
+            // console.log(this.$el.contains(e.target));
             if (!this.$el.contains(e.target)){
                 this.showEmojiBox = false; 
             }
@@ -31,7 +35,7 @@
     methods: {
          selectEmoji(emoji){
             // console.log(emoji,'emoji')
-            this.$parent.top_formBoxVal += emoji.native;
+            this.$emit("getEmoji" , emoji.native) ;
         },
     },
 
@@ -42,8 +46,10 @@
 </script>
 <style lang='less' scoped>
     .emo-btn{
-      display: block;
-      width: 50px; 
       cursor: pointer; 
+      display: inline-block;
+      padding: 0 5px 5px;
+      font-size: 25px;
+      color: #409eff;
     }
 </style>
