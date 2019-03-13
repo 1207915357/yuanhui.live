@@ -9,9 +9,26 @@
         clearable>
       </el-input>
 
+       <el-select
+       class="c"
+        style="width:355px;"
+        v-model="tagValue"
+        multiple
+        filterable
+        allow-create
+        default-first-option
+        placeholder="请选择文章标签">
+        <el-option
+          v-for="item in tagOption"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+
       <el-button-group class="coverBtn">
         <!-- <el-button class="coverBtn22"  type="primary" size="small" icon="iconfont icon-caogaoxiang"><span class="btnText">封面</span></el-button> -->
-        <el-dropdown trigger="click" class='float-l' style="margin-right: -1px;">
+        <el-dropdown trigger="click" class='dropdownBox' style="margin-right: -1px;">
           <el-button type="primary" size="small">
             <i class="iconfont icon-caogaoxiang"></i>
             <span class="btnText">封面</span>
@@ -64,7 +81,23 @@
 
         article: {},
         articleType:"",
-        articleId:""
+        articleId:"",
+
+        tagOption:[
+          {
+            value: 'VUE',
+            label: 'VUE'
+          },
+          {
+            value: 'HTML',
+            label: 'HTML'
+          },
+          {
+            value: 'JS',
+            label: 'JS'
+          }
+        ],
+        tagValue:""
 
       };
     },
@@ -82,8 +115,9 @@
               value:this.mdCode,
               title:this.title,
               pictureUrl:this.pictureUrl,
+              tags:this.tagValue
             }).then((data)=>{
-              if(data.data.code===1){
+              if(data.code===1){
                 this.$message.success("发布成功！")
                 this.$router.push({path:'/'})
               }
@@ -138,8 +172,8 @@
             })
       },
       //获取文章详情
-      getArticleDel(id,type){
-        this.$api.article.articleDel({id,type})
+      getArticleDel(articleId,type){
+        this.$api.article.articleDel({articleId,type})
         .then((data)=>{
           if(data.code===1){
             let article = data.data
@@ -186,7 +220,7 @@
       color: #fff;
   }
   .articleTitle{
-    width: calc(100% - 246px);
+    width: calc(100% - 602px);
   }
   .el-button--mini, .el-button--small {
     border-radius: 0px; 
@@ -225,7 +259,7 @@
     position: relative;
   }
   .coverImg{
-    position: absolute;
+    // position: absolute;
     // z-index: 10001;
     // top:46px;
     // left: -70px;
@@ -248,14 +282,15 @@
   //     -webkit-transform: rotate(45deg);
   //     transform: rotate(45deg);
   //     }
- 
- .coverBtn22.el-button--primary:hover + .coverImg{
-  //  display: block!important;
-    background: red!important;
+ .dropdownBox{
+   position: relative;
+   float: left;
  }
-
 .el-popper[x-placement^=bottom] .popper__arrow {
         border-bottom-color: #ddd;
         left: 108px!important;
+}
+.tagSelect /deep/ .el-input__inner{
+  border-radius: 0px;
 }
 </style> 

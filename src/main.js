@@ -11,6 +11,7 @@ import '@/assets/js/fun.js' //公共方法js
 import api from './api' // 导入api接口
 import vuescroll from 'vuescroll';
 
+
 Vue.prototype.$api = api; // 将api挂载到vue的原型上
 Vue.use(vuescroll, {
   ops: {

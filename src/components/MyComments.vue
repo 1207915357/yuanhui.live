@@ -9,7 +9,7 @@
         </div>
         <div class="form-box">
             <el-input type="textarea" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
-            <div class="actoin-box">
+            <div class="action-box">
                 <div class="emojiWrap">
                     <emojiBox @getEmoji='getEmoji($event,1)' class="emojiBox"></emojiBox>
                 </div>
@@ -37,9 +37,9 @@
                         <el-button @click='replyComment(index)' size='mini' class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                     </div>
                     
-                    <div class="form-box" v-if="!showSubFormBox&&currentIndex==index">
+                    <div id="formBoxId1" class="form-box formBox-sub" v-show="!showSubFormBox&&currentIndex==index">
                         <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item.user.userName}...`"></el-input>
-                        <div class="actoin-box">
+                        <div class="action-box">
                              <div class="emojiWrap">
                                 <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
                             </div>
@@ -64,9 +64,9 @@
                                 <p class="content-text">{{item2.content}}</p>
                                 <el-button size='mini' @click="replySubComment(index,index2)" class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                             </div>
-                            <div class="form-box" v-if="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
+                            <div id="formBoxId2" class="form-box formBox-sub"  v-show="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
                                 <el-input type="textarea" :rows="1" v-model="sub_formBoxVal" :placeholder="`回复${item2.user.userName}...`"></el-input>
-                                <div class="actoin-box">
+                                <div class="action-box">
                                     <div class="emojiWrap">
                                         <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
                                     </div>
@@ -117,6 +117,22 @@
             type:Array
         }
     },
+    created(){
+        //  setTimeout(() => {
+        //         let formBox1 = document.getElementById("formBoxId1")
+        //         let formBox2 = document.getElementById("formBoxId2")
+        //         let formBoxArr = document.querySelectorAll('.formBox-sub')
+
+        //         for(let ele of formBoxArr){
+        //              document.addEventListener('click',(e)=>{
+        //             if(!ele.contains(e.target)){
+        //             }else{
+        //                 return;
+        //             }
+        //         })
+        //         }
+        //     }, 0);
+    },
     methods: {
         restFormBox(){
           this.currentIndex=-1
@@ -126,13 +142,13 @@
           this.sub_formBoxVal = ''
         },
         replyComment(index){
-            this.showSubFormBox =  false;
-            this.currentIndex = index;
+                this.showSubFormBox =  false;
+                this.currentIndex = index;
         },
         replySubComment(index,index2){
-            this.showSubFormBox =  true;
-            this.currentIndex = index;
-            this.currentSubIndex = index2;
+                this.showSubFormBox =  true;
+                this.currentIndex = index;
+                this.currentSubIndex = index2;
         },
         //评论
         commentArticle(){
@@ -154,6 +170,10 @@
 
          //子评论
         subComment(toUserId,commentId){
+             if(!this.userId){
+                this.$message.info('请先登录!')
+                return
+            }
             this.$api.article.subCommentArticle({
                 userId:this.userId,
                 toUserId:toUserId,
@@ -176,7 +196,9 @@
         },
     },
 
-    mounted() {},
+    mounted() {
+           
+    },
 
   }
 
@@ -209,7 +231,7 @@
     .form-box{
        flex: 1;
        background: #fff;
-        .actoin-box{
+        .action-box{
             display: flex;
             margin-top: 10px;
             .emojiWrap{

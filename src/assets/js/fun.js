@@ -6,6 +6,7 @@ moment.locale('zh-cn');
   Vue.prototype.formatTime = (time, style) => {
     return moment(time).format(style);
   }
+  //距离时间
   Vue.prototype.formatTimeToNow = (time) => {
     let theTime =  moment(time).startOf('minutes').fromNow();;
     if(theTime == "几秒前"){

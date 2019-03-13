@@ -15,7 +15,7 @@ html{height: 100%;}
 html *{ box-sizing: border-box;}
 body{
     height: 100%;
-    background: #ccc;
+    background: #68727b;
 }
 /* iconfont svg color */
 /* path { fill: inherit !important }  */
@@ -30,14 +30,16 @@ body{
     border-radius: 0px;
 }
 .el-dropdown-menu.coverDropdown {
-        top: 86px!important;
-        transform: translateX(-140px);
-        border: none;
+    transform: translateX(65px);
+    background: transparent;
+    border: none;
+    padding-bottom: 0;
+    margin: 0; 
 }
 .el-popper.coverDropdown .popper__arrow {
-        border-bottom-color: #ddd;
-        left: 108px!important;
-        top: 4px!important;
+    border-bottom-color: #ddd;
+    left: 108px!important;
+    top: 4px!important;
 }
 /* markdown */
  .hljs {
@@ -49,7 +51,10 @@ body{
  .v-note-wrapper.fullscreen{
      z-index: 10000!important;
  }
-
+.v-note-wrapper .v-note-panel .v-note-show .v-show-content,
+.v-note-wrapper .v-note-panel .v-note-show .v-show-content-html {
+    background: #f1f2f6 !important;
+}
 
  /* common class */
  .float-l{

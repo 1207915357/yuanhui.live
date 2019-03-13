@@ -34,7 +34,7 @@
 </script>
 <style lang='less' scoped>
  .siderBar{
-     background: #fff;
+     background: #f1f2f6;
      margin-top:3px;
      margin-right: 3px;
      .author{

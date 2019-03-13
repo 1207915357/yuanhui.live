@@ -14,8 +14,8 @@
       <div class="mainContent">
         <h2 class="title"><a href="javascript:void(0)">{{article.title}}</a></h2>
         <el-button-group class="btnBox">
-            <el-button @click='editArticle(article.id)' size='small' type="info" plain icon="el-icon-edit"></el-button>
-            <el-button @click='deleteArticle(article.id)' size='small' type="info" plain icon="el-icon-delete"></el-button>
+            <el-button @click='editArticle(article.articleId)' size='small' type="info" plain icon="el-icon-edit"></el-button>
+            <el-button @click='deleteArticle(article.articleId)' size='small' type="info" plain icon="el-icon-delete"></el-button>
         </el-button-group>
         <!-- <p class="content"></p> -->
         <ul class="intro clearfix">
@@ -65,8 +65,8 @@ export default {
         this.$router.push({path:'/manage/publish',query:{id:id,type:this.articleType}})  // type: draft/article
     },
     //删除
-    deleteArticle(id){
-        this.$api.article.deleteArticle({id:id,type:this.articleType})
+    deleteArticle(articleId){
+        this.$api.article.deleteArticle({articleId,type:this.articleType})
         .then((data)=>{
             if(data.code===1){
                 this.$message.success("删除成功！")

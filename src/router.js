@@ -33,11 +33,11 @@ const router = new Router({
       }
     },
     {
-      path: '/msg',
-      name: 'msg',
-      component: () => import('@/views/msg.vue'),
+      path: '/archive',
+      name: 'archive',
+      component: () => import('@/views/archive.vue'),
        meta: {
-        title: '留言'
+        title: '归档'
       }
     },
     {

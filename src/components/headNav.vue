@@ -8,13 +8,13 @@
             <i class="iconfont icon-shouye1 myicon"></i>
             <span>首页</span>
           </el-menu-item>
+          <el-menu-item index="/archive">
+            <i class="iconfont icon-liuyan icon-guidang myicon"></i>
+            <span>归档</span>
+          </el-menu-item>
           <el-menu-item index="/life">
             <i class="iconfont icon-airudiantubiaohuizhi-zhuanqu_tiyushijie myicon"></i>
             <span>生活</span>
-          </el-menu-item>
-          <el-menu-item index="/msg">
-            <i class="iconfont icon-liuyan myicon"></i>
-            <span>留言</span>
           </el-menu-item>
           <el-menu-item index="/about">
             <i class="iconfont icon-guanyuwomen myicon"></i>
@@ -29,10 +29,15 @@
             <el-menu-item index="/manage/video"><span class="iconfont icon-shipin-m myicon"></span><span>发布视频</span></el-menu-item>
             <el-menu-item index="/manage/articleManage"><span class="iconfont icon-caogaoxiang myicon"></span><span>文章管理</span></el-menu-item>
           </el-submenu>
-        </el-menu>
+        </el-menu> 
         <login></login>
       </div>
     </div>
+
+
+  
+
+
 </template>
 <script>
   import login from '@/components/login.vue'

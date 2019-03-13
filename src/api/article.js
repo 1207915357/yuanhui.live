@@ -38,6 +38,10 @@ const article = {
   subCommentArticle(params) {
     return axios.post(`${base.dev}/article/subComment`, qs.stringify(params));
   },
+  //tag
+  getTagList(params){
+    return axios.post(`${base.dev}/tag/getTagList`, qs.stringify(params));
+  }
 }
 
 export default article

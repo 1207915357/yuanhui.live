@@ -1,9 +1,12 @@
 <template>
   <div class="emojiBox">
     <i class="emo-btn iconfont icon-biaoqing-copy-copy-copy" @click='showEmojiBox = true'></i>
-    <picker v-show='showEmojiBox' 
-            set="apple" 
+    <picker v-if='showEmojiBox' 
+            :native='true'
+            :include="emojiConfig"
             :showSkinTones='false'
+            :sheetSize="16"
+            :showSearch="false"
             title='Welcome to yuanhui.live'
             @select="selectEmoji" />
   </div>
@@ -20,13 +23,15 @@
     data () {
       return {
           showEmojiBox:false,
+          emojiConfig:[
+                "recent",
+                "people"
+          ]
       };
     },
      created(){
           // 点击其他不在的区域触发事件
         document.addEventListener('click', (e) => {
-            // console.log(e,this.$el)
-            // console.log(this.$el.contains(e.target));
             if (!this.$el.contains(e.target)){
                 this.showEmojiBox = false; 
             }
@@ -34,7 +39,6 @@
      }, 
     methods: {
          selectEmoji(emoji){
-            // console.log(emoji,'emoji')
             this.$emit("getEmoji" , emoji.native) ;
         },
     },

@@ -71,7 +71,6 @@
            articleId:id
          })
         .then((data)=>{
-          console.log(data)
           if(data.code===1){
             this.articleDel = data.data
           }
@@ -91,7 +90,7 @@
 </script>
 <style lang='less' scoped>
   .articleDel{
-    background: #fff;
+    background: #f1f2f6;
     padding: 20px;
     .delTitle{
       text-align: center;
@@ -109,4 +108,6 @@
   }
 
   
+  
 </style>
+

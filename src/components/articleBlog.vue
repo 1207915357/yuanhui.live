@@ -1,7 +1,11 @@
 <template>
   <div class="articleBlog clearfix">
       <div class="right">
-        <h2 class="title"><a href="javascript:void(0)">{{article.title}}</a></h2>
+          <!-- <el-tag class="articleTag"  size="mini" type="danger">{{formatTime(article.created_time,'YYYY-MM-DD')}}</el-tag> -->
+        <h2 class="title">
+          <a href="javascript:void(0)">{{article.title}}</a>
+          <el-tag class="articleTag" v-for="(item,index) in article.tags" :key="index" size="small" type="">{{item}}</el-tag>
+        </h2>
         <div class="content">
           <editor :isResolve="true" :value="article.value"></editor>
         </div>
@@ -45,8 +49,13 @@ export default {
   cursor: pointer;
   // border-bottom: 1px solid #ccc;
   padding: 12px 0px;
-  background: #fff;
+  // background: #f1f2f6;
+  background: #f1f2f6;
   margin: 3px 0; 
+  &:hover{
+  //  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    // background: #cae4ff
+  }
   // background: linear-gradient(45deg, #cccccc 15px, #fff 15px) left / 50% 100% no-repeat, 
   //             linear-gradient(-45deg, #cccccc 15px, #ffffff 0) right / 50% 100% no-repeat;
  /*  background: radial-gradient(circle at top left,transparent 15px,red 0) top left,radial-gradient(circle at top right,transparent 15px,red 0) top right,radial-gradient(circle at bottom left,transparent 15px,red 0) bottom left,radial-gradient(circle at bottom right,transparent 15px,red 0) bottom right;
@@ -76,7 +85,7 @@ export default {
       padding-bottom: 10px; 
     }
     .content { 
-      max-height:150px;
+      max-height:90px;
       color: #666;
       overflow: hidden;
     }
@@ -92,12 +101,11 @@ export default {
       align-items: center;
       justify-content: center;
       white-space: nowrap;
-      color: #666;
-      border-radius: 1px;
-      border: 1px solid #e8e4e4;
-      &:hover{
-            background-color: #f7f8fa;
-      }
+      color: #409eff;
+      font-weight: 700;
+      border-radius: 15px;
+      border: 1px solid #cae4ff;
+      background-color: #f7f8fa;
     }
     .myicon{
       font-size: 14px;
@@ -109,4 +117,12 @@ export default {
   }
 
 }
+.articleBlog /deep/.v-note-wrapper{
+    z-index: 0;
+  }
+
+  .articleBlog .articleTag{
+    margin-left:  10px;
+  }
 </style>
+
