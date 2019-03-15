@@ -16,7 +16,7 @@
       <br/>
       <a href="#myComment">
         <el-badge :value="articleDel.comments" class="item">
-          <el-button type="info" class="myicon" icon="iconfont icon-pinglun" circle></el-button>
+          <el-button type="info" class="myicon" icon="iconfont icon-liuyan" circle style="font-weight: 700;"></el-button>
         </el-badge>
       </a>
     </div>
@@ -102,6 +102,7 @@
     left: calc(50% - 666px);
     .myicon{
       margin-bottom: 15px;
+      
     }
    
   }

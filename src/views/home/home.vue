@@ -10,19 +10,23 @@
                     @click.native='turnTo(item.articleId)'>
         </articleBlog>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
   // @ is an alias to /src
   import articleBlog from "@/components/articleBlog.vue";
   import siderBar from "@/components/siderBar.vue";
+  import {mapState,mapMutations} from 'vuex'
 
   export default {
     name: "home",
     components: {
       articleBlog,
       siderBar
+    },
+    computed: {
+      ...mapState(['showLoading'])
     },
     data() {
       return {
@@ -31,6 +35,7 @@
       };
     },
     methods: {
+      ...mapMutations(['handleLoading']),
       turnTo(id){
         // const {href} = this.$router.resolve({path:`/home/articleDel/${id}`})
         // window.open(href,'_blank')
@@ -43,10 +48,19 @@
         //   console.log(value,'userid')
         //   this.userId = value
         // })
+        this.handleLoading(true)
         this.$api.article.articleList({type:"article"})
         .then((data)=>{
           if(data.code===1){
+            this.handleLoading(false) 
             this.articleList = data.data
+          }else{
+            this.handleLoading(false)
+            this.$message({
+              type:'error',
+              message:'server error!',
+              duration: 1500
+            })
           }
         })
       },
@@ -72,5 +86,6 @@
       position: fixed;
     }
   }
+
 </style>
 

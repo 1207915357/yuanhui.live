@@ -69,7 +69,12 @@ export default {
         this.$api.article.deleteArticle({articleId,type:this.articleType})
         .then((data)=>{
             if(data.code===1){
-                this.$message.success("删除成功！")
+                this.$message({
+                  message:"删除成功！",
+                  type:'success',
+                  duration:1500
+                })
+                
                 this.getList(this.articleType)
             }
         })

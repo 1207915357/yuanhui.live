@@ -118,7 +118,11 @@
               tags:this.tagValue
             }).then((data)=>{
               if(data.code===1){
-                this.$message.success("发布成功！")
+                this.$message({
+                  type:"success",
+                  duration:1500,
+                  message:"发布成功！"
+                  })
                 this.$router.push({path:'/'})
               }
             })
@@ -135,7 +139,11 @@
         .then((data)=>{
           console.log(data)
           if(data.code===1){
-            this.$message.success('更新成功！')
+             this.$message({
+                  type:"success",
+                  duration:1500,
+                  message:"更新成功！"
+                  })
             this.$router.push({path:'/'})
           }
         })
@@ -167,7 +175,11 @@
             }).then((data)=>{
               console.log(data,'draft')
               if(data.code === 1){
-                  this.$message.success('保存成功!')
+                this.$message({
+                    type:"success",
+                    duration:1500,
+                    message:"保存成功!"
+                  })
               }
             })
       },

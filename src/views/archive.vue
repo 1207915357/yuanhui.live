@@ -59,6 +59,7 @@
 
 <script>
   import siderBar from "@/components/siderBar.vue";
+  import { mapState, mapMutations } from 'vuex';
 
   export default {
     name:'archive',
@@ -83,19 +84,25 @@
         AllLength:'',
       };
     },
-
+    computed:{
+      ...mapState(['showLoading'])
+    },
     methods: {
+      ...mapMutations(['handleLoading']),
       turnTo(id){
         if(!id) return
         this.$router.push({path:`/home/articleDel/${id}`})
       },
       //文章列表
-       getArticleList(type,tagName){
+      getArticleList(type,tagName){
+        // this.handleLoading(true)
         let content  = tagName || 'All The'
         this.ListTitle[0].content = `${content} List`;
         this.$api.article.articleList({type:"article",tagName})
         .then((data)=>{
           if(data.code===1){
+            // this.handleLoading(false)
+
             this.activities = []
             if(type == "All"){
               this.AllLength = data.data.length
@@ -109,6 +116,13 @@
               }
               this.activities.push(obj)
             }
+           }else{
+            // this.handleLoading(false)
+            this.$message({
+              type:'error',
+              message:'server error!',
+              duration: 1500
+            })
           }
         })
       },

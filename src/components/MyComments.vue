@@ -8,7 +8,7 @@
             <i v-else class="defaultAvatar iconfont icon-touxiang"></i>
         </div>
         <div class="form-box">
-            <el-input type="textarea" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
+            <el-input type="textarea" @focus="replyComment(-1)" :rows="2" v-model="top_formBoxVal" placeholder="欢迎指点与交流..."></el-input>
             <div class="action-box">
                 <div class="emojiWrap">
                     <emojiBox @getEmoji='getEmoji($event,1)' class="emojiBox"></emojiBox>
@@ -233,7 +233,8 @@
        background: #fff;
         .action-box{
             display: flex;
-            margin-top: 10px;
+            padding-top: 10px;
+            background: #f1f2f6;
             .emojiWrap{
                 position: relative;
                  .emojiBox{
@@ -272,8 +273,10 @@
                          .replyBtn{margin-left:auto;}
                      }
                      .content{
-                         padding: 8px 0;
+                         padding: 8px 16px;
                          display: flex;
+                         background: #fff;
+                         border-radius: 24px;
                          .content-text{
                              line-height: 32px;
                          }
@@ -293,7 +296,7 @@
                      display: flex;
                      margin-top: 15px;
                      padding-bottom: 10px;
-                     background: #fafbfc;
+                    //  background: #fafbfc;
                  }
              }
 

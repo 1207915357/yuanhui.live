@@ -1,6 +1,7 @@
 <template>
   <div class="articleBlog clearfix">
       <div class="right">
+        
           <!-- <el-tag class="articleTag"  size="mini" type="danger">{{formatTime(article.created_time,'YYYY-MM-DD')}}</el-tag> -->
         <h2 class="title">
           <a href="javascript:void(0)">{{article.title}}</a>
@@ -11,9 +12,9 @@
         </div>
         <ul class="intro clearfix">
           <li><i class="iconfont icon-riqi myicon"></i>{{formatTime(article.created_time,'YYYY-MM-DD')}}</li>
-          <li><i class="iconfont icon-chakanyan myicon"></i>{{article.eye}}</li>
+          <li><i class="iconfont icon-yanjingxian myicon"></i>{{article.eye}}</li>
           <li><i class="iconfont icon-dianzan myicon"></i>{{article.like}}</li>
-          <li><i class="iconfont icon-pinglun myicon"></i>{{article.comments}}</li>
+          <li><i class="iconfont icon-liuyan myicon"></i>{{article.comments}}</li>
         </ul>
       </div>
       <div class="left">
