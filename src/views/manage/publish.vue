@@ -97,7 +97,7 @@
             label: 'JS'
           }
         ],
-        tagValue:""
+        tagValue:[]
 
       };
     },
@@ -111,6 +111,10 @@
      
       //文章发布
       publish(){
+        if(this.tagValue.length<1||this.mdCode == ""||this.title==""){
+          this.$message({type:'info',message:'请输入完整信息',duration:1500})
+          return
+        }
         this.$api.article.publish({
               value:this.mdCode,
               title:this.title,
@@ -129,6 +133,10 @@
        },
       //文章更新
       updateArticle(){
+        if(this.mdCode == ""||this.title==""){
+          this.$message({type:'info',message:'请输入完整信息',duration:1500})
+          return
+        }
         this.$api.article.updateArticle(
           {
             articleId:this.articleId,
@@ -137,7 +145,6 @@
             pictureUrl:this.pictureUrl,
           })
         .then((data)=>{
-          console.log(data)
           if(data.code===1){
              this.$message({
                   type:"success",
@@ -185,7 +192,10 @@
       },
       //获取文章详情
       getArticleDel(articleId,type){
-        this.$api.article.articleDel({articleId,type})
+        this.$api.article.articleDel({
+            articleId,
+            type,
+          })
         .then((data)=>{
           if(data.code===1){
             let article = data.data

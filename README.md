@@ -19,7 +19,7 @@
 >
 > 四. 关于（作者历程详细介绍）
 >
-> 五. 管理
+> 五. 管理后台 react
 >
 > 1. 文章发布 markdown
 > 2. 评论审核
@@ -40,6 +40,8 @@
 > 9. ,移动端适配,rem   px2rem
 > 10. 点赞，评论
 > 11. 分类与归档
+> 12. egg.js
+> 13. ​
 
 
 
@@ -578,6 +580,35 @@ markdown中图片的上传
 
 - 参考博客：http://120.79.10.11:8001/    http://biaochenxuying.cn/
 
+- 闭包应用 
+
+  ```javascript
+  function sendRequest(urls, max, callback) {
+    const len = urls.length;
+    let idx = 0;
+    let counter = 0;
+
+    function _request() {
+      // 有请求，有通道
+      while (idx < len && max > 0) {
+        max--; // 占用通道
+        fetch(urls[idx++]).finally(() => {
+          max++; // 释放通道
+          counter++;
+          if (counter === len) {
+            return callback();
+          } else {
+            _request();
+          }
+        });
+      }
+    }
+    _request();
+  }
+  ```
+
+  ​
+
 
 
 #### 3.1评论功能
@@ -603,9 +634,7 @@ markdown中图片的上传
 
 > 时间划线问题
 
-#### 3.3 换皮肤，主题, 
-
-
+#### 3.3 换皮肤，主题 
 
 #### 3.4  vuex全局加载动画
 
@@ -626,8 +655,9 @@ markdown中图片的上传
 - 3.11 分类,归档,标签功能 
 - 3.13 完成归档标签分类功能
 - 3.14 添加返回顶部功能 | vuex全局加载Loading动画.
-- 3.15 
-- 
+- 3.15 优化loading动画
+- 3.18 文章列表接口分页处理 | 滚动加载更多 | 评论通知用户 | 
+- ​
 
 #### 4.2 遗留bug
 

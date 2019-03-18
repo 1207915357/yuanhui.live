@@ -8,6 +8,7 @@ export default new Vuex.Store({
     userId:"",
     userName:"",
     showLoading:false,
+    barY_process: 0,
   },
   getters:{},
   mutations: {
@@ -20,6 +21,10 @@ export default new Vuex.Store({
     //控制全局loading动画
     handleLoading(state,val) {
       state.showLoading = val
+    },
+    //y轴滚动条进度
+    handleBarYProcess(state, val) {
+      state.barY_process = val
     },
   },
   actions: {}

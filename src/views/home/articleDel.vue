@@ -2,6 +2,7 @@
   <div class="articleDel">
     <!-- 详情 -->
     <h1 class="delTitle">{{articleDel.title}}</h1>
+
     <!-- <div v-html='articleDel.value'></div> -->
     <!-- 解析markdown源码 -->
     <div class='articleContent'>
@@ -108,6 +109,12 @@
   }
   }
 
+  .articleDel /deep/ .el-textarea{
+    background: #f1f2f6;
+    .el-textarea__inner{
+      border-radius: 20px;
+    }
+  }
   
   
 </style>

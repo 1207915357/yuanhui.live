@@ -15,7 +15,7 @@
 </template>
 <script>
 
-  import {mapState} from 'vuex'
+  import {mapState,mapMutations} from 'vuex'
   import headNav from '@/components/headNav.vue'
   import loadingBox from '@/components/loading.vue'
   export default {
@@ -34,6 +34,9 @@
      
     },
     methods: {
+      ...mapMutations(['handleBarYProcess']),
+
+      //回到顶部
       scrollTop(){
         this.$refs.vs.scrollTo(
             {x: 0,y: 0},
@@ -41,7 +44,10 @@
             'easeInQuart' );
           this.$refs.scrollTopBox.classList.add('trans-bottom')
       },
+      //
       handleScroll(vertical, horizontal, nativeEvent){
+        this.handleBarYProcess(vertical.process)
+        // console.log(this.$store.state.barY_process)
         if(vertical.process > 0.1){
           this.$refs.scrollTopBox.classList.add('opacityBox')
         }else if(vertical.process == 0){
@@ -83,7 +89,7 @@
     .iconfont{
       cursor: pointer;
       font-size: 30px;
-      color: #f7f8fa;
+      color: #63dbde;
     }
   }
   .opacityBox{

@@ -273,7 +273,7 @@
                          .replyBtn{margin-left:auto;}
                      }
                      .content{
-                         padding: 8px 16px;
+                         padding: 5px 14px;
                          display: flex;
                          background: #fff;
                          border-radius: 24px;
