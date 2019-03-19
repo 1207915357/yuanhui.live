@@ -31,6 +31,7 @@
           </el-submenu>
         </el-menu> 
         <login></login>
+        <notice></notice>
       </div>
     </div>
 
@@ -41,10 +42,12 @@
 </template>
 <script>
   import login from '@/components/login.vue'
+  import notice from '@/components/Notice.vue'
   export default {
     name: "headNav",
     components:{
-      login
+      login,
+      notice
     },
     data() {
       return {
@@ -76,7 +79,7 @@
       margin: 0 auto;
       .userbox {
         position: absolute;
-        right: 50px;
+        right: 0px;
         top: 10px;
       }
       .logo{

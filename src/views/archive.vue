@@ -98,7 +98,7 @@
         // this.handleLoading(true)
         let content  = tagName || 'All The'
         this.ListTitle[0].content = `${content} List`;
-        this.$api.article.articleList({type:"article",tagName})
+        this.$api.article.articleList({type:"article",tagName,start:0,rows:1000})
         .then((data)=>{
           if(data.code===1){
             // this.handleLoading(false)

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="authorInfo">
-      <siderBar></siderBar>
+      <siderBar @searchList="searchList"></siderBar>
     </div>
     <div class="articleBox" >
         <articleBlog v-for="(item,index) in articleList" 
@@ -87,7 +87,11 @@
           })
         }
       },
-
+      //搜索的文章
+      searchList(data){
+        console.log(data)
+        this.articleList = data
+      },
      
     },
     mounted() {

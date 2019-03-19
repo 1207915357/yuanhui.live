@@ -41,6 +41,9 @@ body{
     left: 108px!important;
     top: 4px!important;
 }
+.el-input__inner{
+    border-radius: 0;
+}
 /* markdown */
  .hljs {
      font-size: 16px !important;

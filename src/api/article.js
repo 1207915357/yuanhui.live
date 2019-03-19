@@ -7,6 +7,9 @@ const article = {
   publish(params) {
     return axios.post(`${base.dev}/article/publish`, qs.stringify(params));
   },
+  searchArticle(params) {
+    return axios.post(`${base.dev}/article/searchArticle`, qs.stringify(params));
+  },
   updateArticle(params) {
     return axios.post(`${base.dev}/article/updateArticle`, qs.stringify(params));
   },
