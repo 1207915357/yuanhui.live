@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="authorInfo">
-      <siderBar @searchList="searchList"></siderBar>
+      <siderBar @searchList="searchList" @wordCloudList="getWordCloudList"></siderBar>
     </div>
     <div class="articleBox" >
         <articleBlog v-for="(item,index) in articleList" 
@@ -27,7 +27,7 @@
       siderBar
     },
     computed: {
-      ...mapState(['barY_process'])
+      ...mapState(['barY_process','vsElement'])
     },
     data() {
       return {
@@ -89,9 +89,20 @@
       },
       //搜索的文章
       searchList(data){
-        console.log(data)
+        this.vsElement.scrollTo(
+            {x: 0,y: 0},
+            500,
+            'easeInQuart' );
         this.articleList = data
       },
+      //词云文章
+      getWordCloudList(data){
+        this.vsElement.scrollTo(
+            {x: 0,y: 0},
+            500,
+            'easeInQuart' );
+        this.articleList = data
+      }
      
     },
     mounted() {

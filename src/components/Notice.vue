@@ -55,6 +55,7 @@
     top: 18px;
     right: 120px;
     .notice-badge{
+        cursor: pointer;
         i{
             color: #fff;
             font-size: 22px;

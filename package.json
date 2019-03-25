@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "d3": "^5.9.2",
+    "d3-dispatch": "^1.0.5",
     "element-ui": "^2.6.1",
     "emoji-mart-vue": "^2.6.6",
     "highlight.js": "^9.14.2",

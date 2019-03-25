@@ -130,9 +130,15 @@
       getTagList(){
         this.$api.article.getTagList({})
         .then((data)=>{
-          console.log(data)
+          // console.log(data)
             if(data.code===1){
               this.tagList = data.data
+            }else{
+              this.$message({
+              type:'error',
+              message:'server error!',
+              duration: 1500
+            })
             }
           }
         )

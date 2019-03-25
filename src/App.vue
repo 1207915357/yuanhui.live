@@ -7,7 +7,7 @@
       </div>
     </vue-scroll>
     <div class="scrollTopBox" ref='scrollTopBox'>
-      <i class="iconfont icon-shengjihuojian" @click='scrollTop'></i>
+      <i class="iconfont icon-shengjihuojian" @click='scrollToTop'></i>
       <!-- <i class="iconfont icon-xiaohuojian" @click='scrollTop'></i> -->
     </div>
    <loading-box v-show='showLoading'></loading-box>
@@ -34,10 +34,11 @@
      
     },
     methods: {
-      ...mapMutations(['handleBarYProcess']),
+      ...mapMutations(['handleBarYProcess','getVsElement']),
 
       //回到顶部
-      scrollTop(){
+      scrollToTop(){
+        console.log()
         this.$refs.vs.scrollTo(
             {x: 0,y: 0},
             500,
@@ -59,6 +60,7 @@
       },
     },
     mounted(){
+      this.getVsElement(this.$refs.vs)
       //this.$router.push({path:this.currentRouter})
     }
   };

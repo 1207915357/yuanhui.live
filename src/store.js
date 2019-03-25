@@ -9,6 +9,7 @@ export default new Vuex.Store({
     userName:"",
     showLoading:false,
     barY_process: 0,
+    vsElement:''
   },
   getters:{},
   mutations: {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     handleBarYProcess(state, val) {
       state.barY_process = val
     },
+    getVsElement(state, val) {
+      state.vsElement = val
+    }
   },
   actions: {}
 })

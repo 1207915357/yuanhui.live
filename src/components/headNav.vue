@@ -31,28 +31,29 @@
           </el-submenu>
         </el-menu> 
         <login></login>
-        <notice></notice>
+        <notice v-if="userId"></notice>
       </div>
     </div>
-
-
-  
 
 
 </template>
 <script>
   import login from '@/components/login.vue'
   import notice from '@/components/Notice.vue'
+  import {mapState} from 'vuex'
   export default {
     name: "headNav",
     components:{
       login,
-      notice
+      notice,
     },
     data() {
       return {
         currentRouter: window.location.pathname,
       };
+    },
+    computed:{
+      ...mapState(['userId'])
     },
     //  watch:{
     //   '$route':function(nowR,oldR){
@@ -64,6 +65,7 @@
       
     },
     mounted(){
+
     }
   };
 
