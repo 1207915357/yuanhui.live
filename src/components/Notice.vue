@@ -11,12 +11,16 @@
     <el-dialog
     title="通知"
     :visible.sync="dialogVisible"
-    width="40%"
-    :before-close="handleClose">
-    <span>这是一段信息</span>
+    width="60%">
+
+    <div>这是一段信息</div>
+    <div>这是一段信息</div>
+    <div>这是一段信息</div>
+    <div>这是一段信息</div>
+
     <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button size="small" @click="dialogVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="dialogVisible = false">已 读</el-button>
     </span>
     </el-dialog>
 
@@ -36,13 +40,13 @@
     methods: {},
 
      methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      }
+      // handleClose(done) {
+      //   this.$confirm('确认关闭？')
+      //     .then(_ => {
+      //       done();
+      //     })
+      //     .catch(_ => {});
+      // }
     }
 
   }

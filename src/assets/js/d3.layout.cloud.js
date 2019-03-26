@@ -1,226 +1,226 @@
+// Word cloud layout by Jason Davies, https://www.jasondavies.com/wordcloud/
+// Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
 
-// import {dispatch} from 'd3-dispatch'
 var dispatch = require("d3-dispatch").dispatch;
+
 var cloudRadians = Math.PI / 180,
   cw = 1 << 11 >> 5,
   ch = 1 << 11;
 
-// module.exports = 
-export default
-  function () {
-    var size = [256, 256],
-      text = cloudText,
-      font = cloudFont,
-      fontSize = cloudFontSize,
-      fontStyle = cloudFontNormal,
-      fontWeight = cloudFontNormal,
-      rotate = cloudRotate,
-      padding = cloudPadding,
-      spiral = archimedeanSpiral,
-      words = [],
-      timeInterval = Infinity,
-      event = dispatch("word", "end"),
-      timer = null,
-      random = Math.random,
-      cloud = {},
-      canvas = cloudCanvas;
-  
-    cloud.canvas = function (_) {
-      return arguments.length ? (canvas = functor(_), cloud) : canvas;
-    };
-  
-    cloud.start = function () {
-      var contextAndRatio = getContext(canvas()),
-        board = zeroArray((size[0] >> 5) * size[1]),
-        bounds = null,
-        n = words.length,
-        i = -1,
-        tags = [],
-        data = words.map(function (d, i) {
-          d.text = text.call(this, d, i);
-          d.font = font.call(this, d, i);
-          d.style = fontStyle.call(this, d, i);
-          d.weight = fontWeight.call(this, d, i);
-          d.rotate = rotate.call(this, d, i);
-          d.size = ~~fontSize.call(this, d, i);
-          d.padding = padding.call(this, d, i);
-          return d;
-        }).sort(function (a, b) {
-          return b.size - a.size;
-        });
-  
-      if (timer) clearInterval(timer);
-      timer = setInterval(step, 0);
-      step();
-  
-      return cloud;
-  
-      function step() {
-        var start = Date.now();
-        while (Date.now() - start < timeInterval && ++i < n && timer) {
-          var d = data[i];
-          d.x = (size[0] * (random() + .5)) >> 1;
-          d.y = (size[1] * (random() + .5)) >> 1;
-          cloudSprite(contextAndRatio, d, data, i);
-          if (d.hasText && place(board, d, bounds)) {
-            tags.push(d);
-            event.call("word", cloud, d);
-            if (bounds) cloudBounds(bounds, d);
-            else bounds = [{
-              x: d.x + d.x0,
-              y: d.y + d.y0
-            }, {
-              x: d.x + d.x1,
-              y: d.y + d.y1
-            }];
-            // Temporary hack
-            d.x -= size[0] >> 1;
-            d.y -= size[1] >> 1;
-          }
-        }
-        if (i >= n) {
-          cloud.stop();
-          event.call("end", cloud, tags, bounds);
-        }
-      }
-    }
-  
-    cloud.stop = function () {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
-      return cloud;
-    };
-  
-    function getContext(canvas) {
-      canvas.width = canvas.height = 1;
-      var ratio = Math.sqrt(canvas.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
-      canvas.width = (cw << 5) / ratio;
-      canvas.height = ch / ratio;
-  
-      var context = canvas.getContext("2d");
-      context.fillStyle = context.strokeStyle = "red";
-      context.textAlign = "center";
-  
-      return {
-        context: context,
-        ratio: ratio
-      };
-    }
-  
-    function place(board, tag, bounds) {
-      var perimeter = [{
-          x: 0,
-          y: 0
-        }, {
-          x: size[0],
-          y: size[1]
-        }],
-        startX = tag.x,
-        startY = tag.y,
-        maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
-        s = spiral(size),
-        dt = random() < .5 ? 1 : -1,
-        t = -dt,
-        dxdy,
-        dx,
-        dy;
-  
-      while (dxdy = s(t += dt)) {
-        dx = ~~dxdy[0];
-        dy = ~~dxdy[1];
-  
-        if (Math.min(Math.abs(dx), Math.abs(dy)) >= maxDelta) break;
-  
-        tag.x = startX + dx;
-        tag.y = startY + dy;
-  
-        if (tag.x + tag.x0 < 0 || tag.y + tag.y0 < 0 ||
-          tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1]) continue;
-        // TODO only check for collisions within current bounds.
-        if (!bounds || !cloudCollide(tag, board, size[0])) {
-          if (!bounds || collideRects(tag, bounds)) {
-            var sprite = tag.sprite,
-              w = tag.width >> 5,
-              sw = size[0] >> 5,
-              lx = tag.x - (w << 4),
-              sx = lx & 0x7f,
-              msx = 32 - sx,
-              h = tag.y1 - tag.y0,
-              x = (tag.y + tag.y0) * sw + (lx >> 5),
-              last;
-            for (var j = 0; j < h; j++) {
-              last = 0;
-              for (var i = 0; i <= w; i++) {
-                board[x + i] |= (last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0);
-              }
-              x += sw;
-            }
-            delete tag.sprite;
-            return true;
-          }
-        }
-      }
-      return false;
-    }
-  
-    cloud.timeInterval = function (_) {
-      return arguments.length ? (timeInterval = _ == null ? Infinity : _, cloud) : timeInterval;
-    };
-  
-    cloud.words = function (_) {
-      return arguments.length ? (words = _, cloud) : words;
-    };
-  
-    cloud.size = function (_) {
-      return arguments.length ? (size = [+_[0], +_[1]], cloud) : size;
-    };
-  
-    cloud.font = function (_) {
-      return arguments.length ? (font = functor(_), cloud) : font;
-    };
-  
-    cloud.fontStyle = function (_) {
-      return arguments.length ? (fontStyle = functor(_), cloud) : fontStyle;
-    };
-  
-    cloud.fontWeight = function (_) {
-      return arguments.length ? (fontWeight = functor(_), cloud) : fontWeight;
-    };
-  
-    cloud.rotate = function (_) {
-      return arguments.length ? (rotate = functor(_), cloud) : rotate;
-    };
-  
-    cloud.text = function (_) {
-      return arguments.length ? (text = functor(_), cloud) : text;
-    };
-  
-    cloud.spiral = function (_) {
-      return arguments.length ? (spiral = spirals[_] || _, cloud) : spiral;
-    };
-  
-    cloud.fontSize = function (_) {
-      return arguments.length ? (fontSize = functor(_), cloud) : fontSize;
-    };
-  
-    cloud.padding = function (_) {
-      return arguments.length ? (padding = functor(_), cloud) : padding;
-    };
-  
-    cloud.random = function (_) {
-      return arguments.length ? (random = _, cloud) : random;
-    };
-  
-    cloud.on = function () {
-      var value = event.on.apply(event, arguments);
-      return value === event ? cloud : value;
-    };
-  
+  //module.exports = 
+  export default function () {
+  var size = [256, 256],
+    text = cloudText,
+    font = cloudFont,
+    fontSize = cloudFontSize,
+    fontStyle = cloudFontNormal,
+    fontWeight = cloudFontNormal,
+    rotate = cloudRotate,
+    padding = cloudPadding,
+    spiral = archimedeanSpiral,
+    words = [],
+    timeInterval = Infinity,
+    event = dispatch("word", "end"),
+    timer = null,
+    random = Math.random,
+    cloud = {},
+    canvas = cloudCanvas;
+
+  cloud.canvas = function (_) {
+    return arguments.length ? (canvas = functor(_), cloud) : canvas;
+  };
+
+  cloud.start = function () {
+    var contextAndRatio = getContext(canvas()),
+      board = zeroArray((size[0] >> 5) * size[1]),
+      bounds = null,
+      n = words.length,
+      i = -1,
+      tags = [],
+      data = words.map(function (d, i) {
+        d.text = text.call(this, d, i);
+        d.font = font.call(this, d, i);
+        d.style = fontStyle.call(this, d, i);
+        d.weight = fontWeight.call(this, d, i);
+        d.rotate = rotate.call(this, d, i);
+        d.size = ~~fontSize.call(this, d, i);
+        d.padding = padding.call(this, d, i);
+        return d;
+      }).sort(function (a, b) {
+        return b.size - a.size;
+      });
+
+    if (timer) clearInterval(timer);
+    timer = setInterval(step, 0);
+    step();
+
     return cloud;
+
+    function step() {
+      var start = Date.now();
+      while (Date.now() - start < timeInterval && ++i < n && timer) {
+        var d = data[i];
+        d.x = (size[0] * (random() + .5)) >> 1;
+        d.y = (size[1] * (random() + .5)) >> 1;
+        cloudSprite(contextAndRatio, d, data, i);
+        if (d.hasText && place(board, d, bounds)) {
+          tags.push(d);
+          event.call("word", cloud, d);
+          if (bounds) cloudBounds(bounds, d);
+          else bounds = [{
+            x: d.x + d.x0,
+            y: d.y + d.y0
+          }, {
+            x: d.x + d.x1,
+            y: d.y + d.y1
+          }];
+          // Temporary hack
+          d.x -= size[0] >> 1;
+          d.y -= size[1] >> 1;
+        }
+      }
+      if (i >= n) {
+        cloud.stop();
+        event.call("end", cloud, tags, bounds);
+      }
+    }
   }
- 
+
+  cloud.stop = function () {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+    return cloud;
+  };
+
+  function getContext(canvas) {
+    canvas.width = canvas.height = 1;
+    var ratio = Math.sqrt(canvas.getContext("2d").getImageData(0, 0, 1, 1).data.length >> 2);
+    canvas.width = (cw << 5) / ratio;
+    canvas.height = ch / ratio;
+
+    var context = canvas.getContext("2d");
+    context.fillStyle = context.strokeStyle = "red";
+    context.textAlign = "center";
+
+    return {
+      context: context,
+      ratio: ratio
+    };
+  }
+
+  function place(board, tag, bounds) {
+    var perimeter = [{
+        x: 0,
+        y: 0
+      }, {
+        x: size[0],
+        y: size[1]
+      }],
+      startX = tag.x,
+      startY = tag.y,
+      maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
+      s = spiral(size),
+      dt = random() < .5 ? 1 : -1,
+      t = -dt,
+      dxdy,
+      dx,
+      dy;
+
+    while (dxdy = s(t += dt)) {
+      dx = ~~dxdy[0];
+      dy = ~~dxdy[1];
+
+      if (Math.min(Math.abs(dx), Math.abs(dy)) >= maxDelta) break;
+
+      tag.x = startX + dx;
+      tag.y = startY + dy;
+
+      if (tag.x + tag.x0 < 0 || tag.y + tag.y0 < 0 ||
+        tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1]) continue;
+      // TODO only check for collisions within current bounds.
+      if (!bounds || !cloudCollide(tag, board, size[0])) {
+        if (!bounds || collideRects(tag, bounds)) {
+          var sprite = tag.sprite,
+            w = tag.width >> 5,
+            sw = size[0] >> 5,
+            lx = tag.x - (w << 4),
+            sx = lx & 0x7f,
+            msx = 32 - sx,
+            h = tag.y1 - tag.y0,
+            x = (tag.y + tag.y0) * sw + (lx >> 5),
+            last;
+          for (var j = 0; j < h; j++) {
+            last = 0;
+            for (var i = 0; i <= w; i++) {
+              board[x + i] |= (last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0);
+            }
+            x += sw;
+          }
+          delete tag.sprite;
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  cloud.timeInterval = function (_) {
+    return arguments.length ? (timeInterval = _ == null ? Infinity : _, cloud) : timeInterval;
+  };
+
+  cloud.words = function (_) {
+    return arguments.length ? (words = _, cloud) : words;
+  };
+
+  cloud.size = function (_) {
+    return arguments.length ? (size = [+_[0], +_[1]], cloud) : size;
+  };
+
+  cloud.font = function (_) {
+    return arguments.length ? (font = functor(_), cloud) : font;
+  };
+
+  cloud.fontStyle = function (_) {
+    return arguments.length ? (fontStyle = functor(_), cloud) : fontStyle;
+  };
+
+  cloud.fontWeight = function (_) {
+    return arguments.length ? (fontWeight = functor(_), cloud) : fontWeight;
+  };
+
+  cloud.rotate = function (_) {
+    return arguments.length ? (rotate = functor(_), cloud) : rotate;
+  };
+
+  cloud.text = function (_) {
+    return arguments.length ? (text = functor(_), cloud) : text;
+  };
+
+  cloud.spiral = function (_) {
+    return arguments.length ? (spiral = spirals[_] || _, cloud) : spiral;
+  };
+
+  cloud.fontSize = function (_) {
+    return arguments.length ? (fontSize = functor(_), cloud) : fontSize;
+  };
+
+  cloud.padding = function (_) {
+    return arguments.length ? (padding = functor(_), cloud) : padding;
+  };
+
+  cloud.random = function (_) {
+    return arguments.length ? (random = _, cloud) : random;
+  };
+
+  cloud.on = function () {
+    var value = event.on.apply(event, arguments);
+    return value === event ? cloud : value;
+  };
+
+  return cloud;
+};
 
 function cloudText(d) {
   return d.text;

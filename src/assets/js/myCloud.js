@@ -2,7 +2,7 @@
 // import cloud from '@/assets/js/d3.layout.cloud.js'
 // 注意点:引入cloud 需要在require后加上 .default 或者用以上两种方法导入
 var d3 = require('d3'),
-    cloud = require('@/assets/js/d3.layout.cloud.js').default
+    cloud = require('./d3.layout.cloud.js').default
 
 export default function (option,callback) {
     let theSize = option.size,

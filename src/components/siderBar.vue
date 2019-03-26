@@ -20,6 +20,9 @@
     </div>
     <!-- 词云 -->
     <div ref='wordCloudBox'></div>
+
+    <!-- 热门文章,最新文章 -->
+    
   </div>
 </template>
 
@@ -100,25 +103,22 @@
       },
       //生成词云
       getWordCloud(wordList){
-        return new Promise((resolve,reject)=>{
          let wordOption = {  
                   wordList,
                   size:[257,257],
                   svgElement: this.$refs.wordCloudBox
                 }
-          myCloud(wordOption,this.getArticleList)
-        })
+          new myCloud(wordOption,this.getArticleList)
       },
       //异步封装
-      // async getAsync(){
-      //   await this.getTagList()
-      // }
+      async getAsync(){
+        let wordList =  await this.getTagList()
+        this.getWordCloud(wordList)
+      }
     },
 
     mounted() {
-         this.getTagList().then((wordList)=>{
-         this.getWordCloud(wordList)
-       })
+        this.getAsync()
     },
 
   }
