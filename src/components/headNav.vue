@@ -103,15 +103,5 @@
         color: #eee;
     }
   }
- .el-dialog{
-      width: 400px!important;
-      .el-dialog__body {
-      padding: 20px 20px 0 20px;
-      }
-  }
-  .el-menu-item .myicon{
-    margin-right: 10px;
-    font-size: 20px;
-    color: #eee;
-  }
+  
 </style>

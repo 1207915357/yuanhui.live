@@ -19,8 +19,9 @@
             </div>
         </div>
     </div>
+
     <div class="comments-list">
-        <div class="item" v-for="(item,index) in commentList" :key="index">
+        <div class="item" v-for="(item,index) in articleDel.commentList" :key="index">
             <div class="comment">
                 <div class="comment-avatar">
                     <!-- <img src="" alt=""> -->
@@ -44,7 +45,7 @@
                                 <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
                             </div>
                             <div class="submit">
-                                <el-button @click="subComment(item.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
+                                <el-button @click="subComment(item.user.userId,item.commentId,item.content)" size='small' type='primary'>评论</el-button>
                             </div>
                         </div>
                     </div>
@@ -71,7 +72,7 @@
                                         <emojiBox @getEmoji='getEmoji($event,2)' class="emojiBox"></emojiBox>
                                     </div>
                                     <div class="submit">
-                                        <el-button @click="subComment(item2.user.userId,item.commentId)" size='small' type='primary'>评论</el-button>
+                                        <el-button @click="subComment(item2.user.userId,item.commentId,item2.content)" size='small' type='primary'>评论</el-button>
                                     </div>
                                 </div>
                             </div>
@@ -113,8 +114,8 @@
       };
     },
     props:{
-        commentList:{
-            type:Array
+        articleDel:{
+            type:Object
         }
     },
     created(){
@@ -160,6 +161,7 @@
                 userId:this.userId,
                 articleId:this.$route.params.id,
                 content:this.top_formBoxVal,
+                author:this.articleDel.author
             }).then(data=>{
                 if(data.code===1){
                     this.restFormBox()
@@ -169,7 +171,7 @@
         },
 
          //子评论
-        subComment(toUserId,commentId){
+        subComment(toUserId,commentId,toContent){
              if(!this.userId){
                 this.$message.info('请先登录!')
                 return
@@ -180,6 +182,7 @@
                 articleId:this.$route.params.id,
                 commentId:commentId,
                 content:this.sub_formBoxVal,
+                toContent
             }).then(data=>{
                  if(data.code===1){
                     this.restFormBox()

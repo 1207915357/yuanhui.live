@@ -8,25 +8,32 @@ import '@/icons/index.js' //SvgIcon
 import '@/assets/css/common.css' //公共css
 import '@/assets/js/fun.js' //公共方法js
 // import request from '@/assets/js/request.js'
+// api
 import api from './api' // 导入api接口
-import vuescroll from 'vuescroll';
- 
-
-
 Vue.prototype.$api = api; // 将api挂载到vue的原型上
-Vue.use(vuescroll, {
-  ops: {
-    bar: {
-      keepShow: true,
-      background: '#545c64',
-    }
-  }, // 在这里设置全局默认配置
-});
+
+//socket.io
+// import SocketIO from 'socket.io-client';
+// import VueSocketIO from 'vue-socket.io'
+// const options = {path: ''}; //Options object to pass into SocketIO
+// Vue.use(new VueSocketIO({
+//   debug: true,
+//   connection: SocketIO('http://localhost:3000', options), //options object is Optional
+//   store
+// }));
+
+// vuescroll
+import vuescroll from 'vuescroll';
+Vue.use(vuescroll, 
+  {
+    // 在这里设置全局默认配置
+  });
 
 // import 'normalize.css'
 // Vue.use(request)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+
 
 new Vue({
   router,
@@ -37,3 +44,4 @@ new Vue({
   
   render: h => h(App)
 }).$mount('#app')
+

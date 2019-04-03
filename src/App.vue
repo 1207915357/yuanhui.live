@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <head-nav class="headNav"></head-nav>
-    <vue-scroll ref='vs' @handle-scroll="handleScroll" style="height: calc(100% - 61px);"> 
+    <vue-scroll :ops='homeScroll' ref='vs' @handle-scroll="handleScroll" style="height: calc(100% - 61px);"> 
       <div class="layout">
         <router-view />
       </div>
@@ -27,7 +27,12 @@
     computed: mapState(['showLoading']),
     data() {
       return {
-
+        homeScroll: {
+          bar: {
+            keepShow: true,
+            background: '#545c64',
+          }
+        }, 
       };
     },
     created() {

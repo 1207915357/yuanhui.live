@@ -41,10 +41,23 @@ const article = {
   subCommentArticle(params) {
     return axios.post(`${base.dev}/article/subComment`, qs.stringify(params));
   },
+   //getNotice
+   getNotice(params) {
+     return axios.post(`${base.dev}/article/getNotice`, qs.stringify(params));
+   },
+   //readedNotice
+   readedNotice(params) {
+     return axios.post(`${base.dev}/article/readedNotice`, qs.stringify(params));
+   },
+   //clearNotice
+    clearNotice(params) {
+      return axios.post(`${base.dev}/article/clearNotice`, qs.stringify(params));
+    },
   //tag
   getTagList(params){
     return axios.post(`${base.dev}/tag/getTagList`, qs.stringify(params));
-  }
+  },
+  
 }
 
 export default article

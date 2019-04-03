@@ -23,7 +23,7 @@
     </div>
 
     <!-- 评论 -->
-    <my-comments id="myComment" :commentList='articleDel.commentList'></my-comments>
+    <my-comments id="myComment" :articleDel='articleDel'></my-comments>
 
   </div>
 </template>
