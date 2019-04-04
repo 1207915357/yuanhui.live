@@ -29,25 +29,22 @@
                         <avatar :username="item.user.userName"></avatar>
                     </div>
                     <div class="content-box">
-                        <div class="userInfo-box">
+                        <div class="userInfo-box" >
                             <h3 class="userName">
                                 {{item.user.userName}}
                             </h3>
-
-                            <div class="userText" v-show='item.type=="comment"'>
-                                    <span>评论了文章</span>
-                                    <span class="textStyle" v-if='item.articleTitle'>{{item.articleTitle}}</span>
-                            </div>
-
-                            <div class="userText" v-show='item.type=="answer"'>
-                                <span >回复了你的评论:</span>
-                                <span class="textStyle" v-if='item.toContent'>{{item.toContent}}</span>
-                            </div>
-
                             <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                         </div>
                         <div class="content">
                             <p class="content-text">{{item.content}}</p>
+                        </div>
+                        <div class="contentType" v-if="item.type=='comment'">
+                                <span>评论了文章</span>
+                                <span class="titleStyle" v-if='item.articleTitle'>{{item.articleTitle}}</span>
+                        </div>
+                        <div class="contentType" v-if="item.type=='answer'">
+                            <span >回复了你的评论:</span>
+                            <span class="textStyle" v-if='item.toContent'>{{item.toContent}}</span>
                         </div>
                     </div>
                 </div>
@@ -171,10 +168,10 @@
 </script>
 <style lang='less' scoped>
 .notice{
-    display: inline-block;
-    position: absolute;
-    top: 18px;
-    right: 120px;
+    // display: inline-block;
+    // position: absolute;
+    // top: 18px;
+    // right: 120px;
     .notice-badge{
         cursor: pointer;
         i{
@@ -223,30 +220,30 @@
                      .userInfo-box{
                          display: flex;
                          .userName{color:#406599;font-size: 14px;}
-                         .userText{font-weight: 400; padding:  0 5px; color: #aaa;
-                            .textStyle{color:#406599; font-weight: 700; font-size: 14px; margin:0 5px;padding: 0 5px;background: #f1f0f0;}
-                         }
                          .comment-time{margin: 0 20px;line-height: 21px;color:#8a9aa9; margin-left:auto;}
-                        //  .replyBtn{margin-left:auto;}
                      }
                      .content{
-                         padding: 5px 14px;
+                         padding: 0 5px;
                          display: flex;
-                        //  background: #fff;
                          border-radius: 24px;
                          .content-text{
                              line-height: 32px;
                          }
-                         .reply-user{
-                             padding: 0 5px;
-                             color:#406599;
-                             font-weight: 700;
-                             font-style: normal;
-                         }
-                         .replyBtn{
-                            margin-left: auto;
-                        }
                      }
+                      .contentType{
+                            color: #a1a9b3;
+                            padding: 5px;
+                            background: #f8f8f8;
+                            .textStyle{
+                                    color:#000;
+                                    padding: 0 5px;
+                                }
+                            .titleStyle{
+                                color:#406599;
+                                font-weight: 700; 
+                                padding: 0 5px;
+                            }
+                        }
                      
                  }
              }

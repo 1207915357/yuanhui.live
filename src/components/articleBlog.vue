@@ -103,7 +103,7 @@ export default {
       justify-content: center;
       white-space: nowrap;
       color: #409eff;
-      font-weight: 700;
+      // font-weight: 700;
       border-radius: 15px;
       border: 1px solid #cae4ff;
       background-color: #f7f8fa;

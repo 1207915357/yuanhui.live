@@ -29,7 +29,7 @@
                 </div>
                 <div class="content-box">
                     <div class="userInfo-box">
-                        <h3 class="userName">{{item.user.userName}}</h3>
+                        <h4 class="userName">{{item.user.userName}}</h4>
                         <!-- <p class="comment-time">{{formatTime(item.created_time,'YYYY-MM-DD hh:mm:ss')}}</p> -->
                         <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                     </div>
@@ -57,7 +57,7 @@
                         </div>
                         <div class="content-box">
                             <div class="userInfo-box">
-                                <h3 class="userName">{{item2.user.userName}}</h3>
+                                <h4 class="userName">{{item2.user.userName}}</h4>
                                 <span class="comment-time">{{formatTimeToNow(item2.created_time)}}</span>
                             </div>
                             <div class="content">

@@ -30,8 +30,12 @@
             <el-menu-item index="/manage/articleManage"><span class="iconfont icon-caogaoxiang myicon"></span><span>文章管理</span></el-menu-item>
           </el-submenu>
         </el-menu> 
-        <login></login>
-        <notice v-if="userId"></notice>
+        <div class="headRight">
+          <!-- 通知 -->
+          <notice class="noticeComponent" v-if="userId"></notice>
+          <!-- 登录 -->
+          <login class="loginComponent"></login>
+        </div>
       </div>
     </div>
 
@@ -79,16 +83,20 @@
       position: relative;
       width: 1200px;
       margin: 0 auto;
-      .userbox {
-        position: absolute;
-        right: 0px;
-        top: 10px;
-      }
       .logo{
         position: absolute;
         top: 10px;
         left: 20px;
         z-index: 2;
+      }
+       .headRight {
+        position: absolute;
+        right: 0px;
+        top: 14px;
+        display: flex;
+        .noticeComponent{
+          margin: 8px 20px 0 0;
+        }
       }
     }
     .el-menu-demo {
