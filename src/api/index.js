@@ -3,13 +3,16 @@
  */
 //用户模块
 import user from '@/api/user';
-// 文章模块接口
+//文章模块接口
 import article from '@/api/article';
+//通知模块
+import notice from '@/api/notice';
 // 其他模块的接口……
 
 // 导出接口
 export default {    
     user,
     article,
+    notice,
     // ……
 }

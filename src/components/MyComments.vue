@@ -161,11 +161,23 @@
                 userId:this.userId,
                 articleId:this.$route.params.id,
                 content:this.top_formBoxVal,
-                author:this.articleDel.author
             }).then(data=>{
                 if(data.code===1){
-                    this.restFormBox()
+                    //通知作者
+                    let option = { 
+                        type:'comment',
+                        userId:this.userId,
+                        toUserId:this.articleDel.author.userId,
+                        content:this.top_formBoxVal,
+                        toContent:'',
+                        articleId:this.$route.params.id,
+                    }
+                    this.publishNotice(option)
                     this.$parent.lookArticleDel(this.$route.params.id)
+                    this.restFormBox()
+
+                }else{
+                    this.$message.error('服务器错误')
                 }
             })
         },
@@ -182,14 +194,41 @@
                 articleId:this.$route.params.id,
                 commentId:commentId,
                 content:this.sub_formBoxVal,
-                toContent
             }).then(data=>{
                  if(data.code===1){
-                    this.restFormBox()
+                    //通知用户
+                    let option = { 
+                        type:'answer',
+                        userId:this.userId,
+                        toUserId:toUserId,
+                        content:this.sub_formBoxVal,
+                        toContent,
+                        articleId:this.$route.params.id,
+                    }
+                    this.publishNotice(option)
                     this.$parent.lookArticleDel(this.$route.params.id)
+                    this.restFormBox()
+                }else{
+                    this.$message.error('服务器错误')
                 }
             })
         },
+
+        //通知
+        //option:{ type,userId,toUserId,content,toContent,articleId}
+        publishNotice(option){ 
+            this.$api.notice.publishNotice(
+                option
+            ).then((data)=>{
+                console.log(data)
+                if(data.code === 1){
+                    
+                }else{
+                    this.$message.error('服务器错误')
+                }
+            })
+        },
+        //表情
         getEmoji(emoji,type){
             if(type===1){
                 this.top_formBoxVal += emoji

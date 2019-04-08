@@ -31,21 +31,31 @@
                     <div class="content-box">
                         <div class="userInfo-box" >
                             <h3 class="userName">
-                                {{item.user.userName}}
+                                <span class="nameBox">{{item.user.userName}}</span>    
+                                <i v-if="item.user.type == 0" class="iconfont icon-huiyuan1"></i>
+                                <!-- <i v-if="item.user.type == 0" class="iconfont icon-VIP1"></i> -->
+                                <!-- <i v-if="item.user.type == 0" class="iconfont icon-huiyuan"></i> -->
+                                <!-- <i v-if="item.user.type == 0" class="iconfont icon-vip1"></i> -->
                             </h3>
                             <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                         </div>
                         <div class="content">
                             <p class="content-text">{{item.content}}</p>
                         </div>
+                        <!-- comment-->
                         <div class="contentType" v-if="item.type=='comment'">
                                 <span>评论了文章</span>
                                 <span class="titleStyle" v-if='item.articleTitle'>{{item.articleTitle}}</span>
                         </div>
+                        <!-- answer -->
                         <div class="contentType" v-if="item.type=='answer'">
                             <span >回复了你的评论:</span>
                             <span class="textStyle" v-if='item.toContent'>{{item.toContent}}</span>
                         </div>
+                        <!-- notice
+                        <div class="contentType" v-if="item.type=='notice'">
+                            <span >回复了你的评论:</span>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -89,6 +99,7 @@
         }, 
       };
     },
+
     // sockets: {
     //     //建立连接自动调用connect
     //     connect: function() {
@@ -105,7 +116,7 @@
      methods: {
         //获取通知
         getNotice(){
-            this.$api.article.getNotice({userId:this.userId})
+            this.$api.notice.getNotice({userId:this.userId})
             .then((data)=>{
                 console.log(data,'data')
                 if(data.code === 1){
@@ -116,6 +127,7 @@
         },
         //跳转到文章详情
         turnToArticleDel(id){
+            if(!id)return
             this.dialogVisible = false;
             this.$router.push({path:`/home/articleDel/${id}`})
         },
@@ -130,7 +142,7 @@
         readedNotice(){
             this.dialogVisible = true
             if(this.unreadNum === 0)return
-            this.$api.article.readedNotice({
+            this.$api.notice.readedNotice({
                 userId:this.userId
             })
             .then((data)=>{
@@ -146,7 +158,7 @@
         //清除通知
         clearNotice(){
            if(this.commentNotice.length === 0)return
-            this.$api.article.clearNotice({
+            this.$api.notice.clearNotice({
                 userId:this.userId
             })
             .then((data)=>{
@@ -219,7 +231,10 @@
                      flex: 1;
                      .userInfo-box{
                          display: flex;
-                         .userName{color:#406599;font-size: 14px;}
+                         .userName{
+                             .nameBox{color:#406599;font-size: 14px;}
+                             .iconfont{padding-left: 5px; color: #ecca38;}
+                             }
                          .comment-time{margin: 0 20px;line-height: 21px;color:#8a9aa9; margin-left:auto;}
                      }
                      .content{

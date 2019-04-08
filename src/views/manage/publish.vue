@@ -63,11 +63,15 @@
 <script>
   import editor from '@/components/editor.vue'
   import base from '@/api/base.js'
+  import {mapState} from 'vuex'
   
   export default {
     name:'publish',
     components:{
       editor
+    },
+    computed:{
+        ...mapState(['userId'])
     },
     data () {
       return {
@@ -119,9 +123,13 @@
               value:this.mdCode,
               title:this.title,
               pictureUrl:this.pictureUrl,
-              tags:this.tagValue
+              tags:this.tagValue,
+              authorId: this.userId
             }).then((data)=>{
               if(data.code===1){
+                const{ articleId , title }  = data.data
+                let content = `博主发布了新文章《${title}》，快来围观！`
+                this.noticeAllUser(this.userId,content,articleId)
                 this.$message({
                   type:"success",
                   duration:1500,
@@ -130,6 +138,17 @@
                 this.$router.push({path:'/'})
               }
             })
+       },
+       //通知全体
+       noticeAllUser(userId,content,articleId){
+         this.$api.notice.noticeAllUser({
+           userId,content,articleId
+         }).then((data)=>{
+           console.log(data)
+           if(data.code === 1){
+             
+           }
+         })
        },
       //文章更新
       updateArticle(){
