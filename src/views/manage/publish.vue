@@ -128,7 +128,7 @@
             }).then((data)=>{
               if(data.code===1){
                 const{ articleId , title }  = data.data
-                let content = `博主发布了新文章《${title}》，快来围观！`
+                const content = `发布了新文章《${title}》，快来围观！`
                 this.noticeAllUser(this.userId,content,articleId)
                 this.$message({
                   type:"success",
@@ -144,10 +144,7 @@
          this.$api.notice.noticeAllUser({
            userId,content,articleId
          }).then((data)=>{
-           console.log(data)
-           if(data.code === 1){
-             
-           }
+           if(data.code === 1){}
          })
        },
       //文章更新

@@ -129,7 +129,7 @@
         turnToArticleDel(id){
             if(!id)return
             this.dialogVisible = false;
-            this.$router.push({path:`/home/articleDel/${id}`})
+            this.$router.push({path:`/articleDel/${id}`})
         },
         //确认清除通知弹窗
          handleClose() {

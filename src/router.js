@@ -65,9 +65,9 @@ const router = new Router({
        }
      },
     {
-      path: '/home/articleDel/:id',
+      path: '/articleDel/:id',
       name: 'articleDel',
-      component: () => import('@/views/home/articleDel.vue'),
+      component: () => import('@/views/articleDel.vue'),
       meta: {
         title: '文章详情'
       }

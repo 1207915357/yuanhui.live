@@ -83,7 +83,7 @@
     }
   }
  .layout {
-    width: 1200px;
+    width: 1300px;
     height: calc(100vh - 61px);
     margin: 0 auto;
   }

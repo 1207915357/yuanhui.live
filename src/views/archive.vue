@@ -1,9 +1,9 @@
 <!--归档-->
 <template>
   <div class="archive">
-    <div class="authorInfo">
+    <!-- <div class="authorInfo">
       <siderBar></siderBar>
-    </div>
+    </div> -->
     <div class="contentBox">
       <div class="tagBox">
         <h3 class="tagBoxTitle">分类标签</h3>
@@ -91,7 +91,7 @@
       ...mapMutations(['handleLoading']),
       turnTo(id){
         if(!id) return
-        this.$router.push({path:`/home/articleDel/${id}`})
+        this.$router.push({path:`/articleDel/${id}`})
       },
       //文章列表
       getArticleList(type,tagName){
@@ -157,13 +157,13 @@
 <style lang='less' scoped>
 .archive{
     display: flex;
-    .authorInfo{
-      width: 260px;
-      position: fixed;
-    }
+    // .authorInfo{
+    //   width: 260px;
+    //   position: fixed;
+    // }
     .contentBox{
       flex: 1;
-      margin-left: 260px;
+      // margin-left: 260px;
       margin-top: 3px;
       background: #f1f2f6;
       padding: 50px;

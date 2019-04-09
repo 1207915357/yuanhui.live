@@ -14,15 +14,27 @@
     <div class="searchBox">
         <el-input placeholder="搜索文章" @keyup.enter.native='serchArticle(keyWord)' v-model="keyWord">
             <i slot="prefix" class="el-input__icon el-icon-search" style="cursor:pointer;" @click='serchArticle(keyWord)'></i>
-            <el-tag class='searchTag' @click='serchArticle("hottest")' slot="suffix" type="danger" size="mini">最热</el-tag>
-            <el-tag class='searchTag' @click='serchArticle("newest")' slot="suffix" type="danger" size="mini">最新</el-tag>
+            <!-- <el-tag class='searchTag' @click='serchArticle("hottest")' slot="suffix" type="danger" size="mini">最热</el-tag> -->
+            <!-- <el-tag class='searchTag' @click='serchArticle("newest")' slot="suffix" type="danger" size="mini">最新</el-tag> -->
         </el-input>
     </div>
+
+    <!-- 热门文章,最新文章 -->
+    <div class="hotArticleBox" v-cloak>
+        <h5 class="hotTitle">最热文章</h5>
+        <ul>
+            <li class="hotArticle" v-for="(item,index) in articleList" :key="index">
+                <a @click='turnTo(item.articleId)'>
+                    <p class="articleText">{{item.title}}</p>
+                    <span class="articleTime">{{formatTime(item.creatTime,'YYYY-MM-DD')}}</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
     <!-- 词云 -->
     <div ref='wordCloudBox'></div>
 
-    <!-- 热门文章,最新文章 -->
-    
   </div>
 </template>
 
@@ -40,13 +52,21 @@
 
     methods: {
          ...mapMutations(['handleLoading']),
+
+        turnTo(id){
+            this.$router.push({path:`/articleDel/${id}`})
+        },
         //搜索文章
-         serchArticle(keyWord){
+        serchArticle(keyWord){
             this.$api.article.searchArticle({keyWord})
             .then((data)=>{
                 // console.log(data)
                 if(data.code===1){
-                    this.$emit('searchList',data.data)
+                    if(keyWord == 'hottest'){
+                        this.articleList = data.data;
+                    }else{
+                        this.$emit('searchList',data.data)
+                    }
                 }else{
                     this.$message({type:'error',message:'server is error!',duration:1500})
                 }
@@ -81,7 +101,7 @@
             )
          })
       },
-//文章列表
+    //文章列表
       getArticleList(tagName){
         this.handleLoading(true)
         // this.$router.push({path:'/'}) // ?? 导航不变
@@ -105,7 +125,7 @@
       getWordCloud(wordList){
          let wordOption = {  
                   wordList,
-                  size:[257,257],
+                  size:[300,260],
                   svgElement: this.$refs.wordCloudBox
                 }
           new myCloud(wordOption,this.getArticleList)
@@ -119,6 +139,7 @@
 
     mounted() {
         this.getAsync()
+        this.serchArticle('hottest')
     },
 
   }
@@ -158,11 +179,41 @@
     //
      .searchBox{
          .searchTag{
-             margin: 10px 2px 0 0 ;
              cursor: pointer; 
+             margin: 10px 2px 0 0 ;
          }
     }
  }
 
+    .hotArticleBox{
+        // border-top: 1px solid #ccc;
+        // height: 250px;
+        .hotTitle{
+            padding: 6px 15px;
+            // border-bottom: 1px solid #ccc;
+        }
+        .hotArticle a{
+            padding: 6px 15px;
+            display: flex;
+            align-items: center;
+            color: #777;
+            cursor: pointer;
+            &:hover{
+                background: #e4eefd;
+                color: #409eff;
+            }
+            .articleText{
+                width: 190px;
+                // overflow: hidden;
+                // text-overflow: ellipsis;
+                // white-space: nowrap;
+            }
+            .articleTime{
+                color: #999;
+                margin-left: auto;
+                font-size: 12px;
+            }
+        }
+    }
 
 </style>

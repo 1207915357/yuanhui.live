@@ -49,9 +49,9 @@
     methods: {
       ...mapMutations(['handleLoading']),
       turnTo(id){
-        // const {href} = this.$router.resolve({path:`/home/articleDel/${id}`})
+        // const {href} = this.$router.resolve({path:`/articleDel/${id}`})
         // window.open(href,'_blank')
-        this.$router.push({path:`/home/articleDel/${id}`})
+        this.$router.push({path:`/articleDel/${id}`})
       },
 
       //获取首页博客文章列表
@@ -117,10 +117,10 @@
     display: flex;
     .articleBox{
       flex: 1;
-      margin-left: 260px;
+      margin-left: 300px;
     }
     .authorInfo{
-      width: 260px;
+      width: 300px;
       position: fixed;
     }
   }

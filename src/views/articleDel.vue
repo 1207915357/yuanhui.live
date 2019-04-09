@@ -37,6 +37,12 @@
       editor,
       MyComments
     },
+    watch:{
+      '$route':function(nowR,oldR){
+        //  console.log(nowR,oldR)
+         this.lookArticleDel(this.$route.params.id)
+      }
+    },
     computed: {
       userId(){
         return this.$store.state.userId
@@ -74,6 +80,11 @@
         .then((data)=>{
           if(data.code===1){
             this.articleDel = data.data
+          }else if(data.code == 200){
+            this.$message.info(data.msg)
+            setTimeout(() => {
+              this.$router.push('/')
+            }, 1000);
           }
         })
       },
@@ -100,10 +111,9 @@
   .siderBtn{
     position: fixed;
     top: 30%;
-    left: calc(50% - 666px);
+    left: calc(50% - 710px);
     .myicon{
       margin-bottom: 15px;
-      
     }
    
   }
