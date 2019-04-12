@@ -1,7 +1,15 @@
 <template>
   <div class="articleDel">
     <!-- 详情 -->
-    <h1 class="delTitle">{{articleDel.title}}</h1>
+    <div class="articleInfoBox">
+      <h1 class="articleTitle">{{articleDel.title}}</h1>
+      <ul class="articleInfo clearfix">
+          <li><i class="iconfont icon-riqi myicon"></i>{{formatTime(articleDel.created_time,'YYYY年MM月DD日')}}</li>
+          <li><i class="iconfont icon-yanjingxian myicon"></i>{{articleDel.eye}}</li>
+          <li><i class="iconfont icon-dianzan myicon"></i>{{articleDel.like}}</li>
+          <li><i class="iconfont icon-liuyan myicon"></i>{{articleDel.comments}}</li>
+        </ul>
+    </div>
 
     <!-- <div v-html='articleDel.value'></div> -->
     <!-- 解析markdown源码 -->
@@ -64,7 +72,7 @@
         }).then((data)=>{
           console.log(data)
           if(data.code===1){
-            this.lookArticleDel(this.$route.params.id)
+            this.lookArticleDel(this.$route.params.id,'true')
           }else if(data.code===201){
             this.$message.info('请先登录!')
           }
@@ -72,10 +80,11 @@
       },
 
        //查看文章详情
-      lookArticleDel(id){
+      lookArticleDel(id,notAddEye){
          this.$api.article.articleDel({
            type:"article",
-           articleId:id
+           articleId:id,
+           notAddEye
          })
         .then((data)=>{
           if(data.code===1){
@@ -101,22 +110,38 @@
 
 </script>
 <style lang='less' scoped>
-  .articleDel{
-    background: #f1f2f6;
-    padding: 20px;
-    .delTitle{
+  .articleInfoBox{
+    .articleTitle{
       text-align: center;
       padding:20px 
     }
-  .siderBtn{
-    position: fixed;
-    top: 30%;
-    left: calc(50% - 710px);
-    .myicon{
-      margin-bottom: 15px;
+     .articleInfo{
+      display: flex;
+      justify-content: center;
     }
-   
+    .articleInfo>li{
+      padding: 0 10px 10px;
+      display: flex;
+      align-items: center;
+      // border-bottom: 1px solid #dfe2e5;
+    }
+    .myicon{
+      font-size: 14px;
+      margin-right: 10px;
+    }
   }
+
+  .articleDel{
+    background: #f1f2f6;
+    padding: 20px;
+    .siderBtn{
+      position: fixed;
+      top: 30%;
+      left: calc(50% - 710px);
+      .myicon{
+        margin-bottom: 15px;
+      }
+    }
   }
 
   .articleDel /deep/ .el-textarea{
