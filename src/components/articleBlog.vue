@@ -54,7 +54,7 @@ export default {
   background: #f1f2f6;
   margin: 3px 0; 
   &:hover{
-  //  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    // box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
     // background: #cae4ff
   }
   // background: linear-gradient(45deg, #cccccc 15px, #fff 15px) left / 50% 100% no-repeat, 

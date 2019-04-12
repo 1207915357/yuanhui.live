@@ -86,10 +86,8 @@
             $imgDel(file){
                 console.log(file)
             },
-
         },
         mounted(){
-
         }
     }
     </script>
