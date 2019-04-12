@@ -29,11 +29,7 @@
                 </div>
                 <div class="content-box">
                     <div class="userInfo-box">
-                        <h4 class="userName">
-                            {{item.user.userName}}
-                            <i v-if="item.user.type == 0" class="iconfont icon-huiyuan1"></i>
-                            <!-- <i v-if="item.user.type == 1" class="iconfont icon-huiyuan"></i> -->
-                        </h4>
+                        <h4 class="userName">{{item.user.userName}}</h4>
                         <!-- <p class="comment-time">{{formatTime(item.created_time,'YYYY-MM-DD hh:mm:ss')}}</p> -->
                         <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                     </div>
@@ -61,7 +57,7 @@
                         </div>
                         <div class="content-box">
                             <div class="userInfo-box">
-                                <h4 class="userName">{{item2.user.userName}}<i v-if="item2.user.type == 0" class="iconfont icon-huiyuan1"></i></h4>
+                                <h4 class="userName">{{item2.user.userName}}</h4>
                                 <span class="comment-time">{{formatTimeToNow(item2.created_time)}}</span>
                             </div>
                             <div class="content">
@@ -314,9 +310,7 @@
                      flex: 1;
                      .userInfo-box{
                          display: flex;
-                         .userName{color:#406599;
-                            .iconfont{padding-left: 5px; color: #ecca38;}
-                         }
+                         .userName{color:#406599;}
                          .comment-time{margin: 0 20px;line-height: 21px;color:#8a9aa9;}
                          .replyBtn{margin-left:auto;}
                      }

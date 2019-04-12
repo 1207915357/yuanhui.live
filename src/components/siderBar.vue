@@ -24,11 +24,10 @@
         <h5 class="hotTitle">最热文章</h5>
         <ul>
             <li class="hotArticle" v-for="(item,index) in articleList" :key="index">
-                <router-link :to='{name:"articleDel",params:{id:item.articleId}}'>
-                <!-- <router-link :to='`articleDel/${item.articleId}`'> -->
+                <a @click='turnTo(item.articleId)'>
                     <p class="articleText">{{item.title}}</p>
                     <span class="articleTime">{{formatTime(item.creatTime,'YYYY-MM-DD')}}</span>
-                </router-link>
+                </a>
             </li>
         </ul>
     </div>
@@ -190,7 +189,7 @@
         // border-top: 1px solid #ccc;
         // height: 250px;
         .hotTitle{
-            padding: 6px 10px;
+            padding: 6px 15px;
             // border-bottom: 1px solid #ccc;
         }
         .hotArticle a{
