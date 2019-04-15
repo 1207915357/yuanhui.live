@@ -7,13 +7,13 @@ function resolve(dir) {
 module.exports = {
   chainWebpack: config => {
     // 这里是对环境的配置，不同环境对应不同的BASE_API，以便axios的请求地址不同
-    config.plugin('define').tap(args => {
-        const argv = process.argv
-        const mode = argv[argv.indexOf('--project-mode') + 1]
-        args[0]['process.env'].MODE = `"${mode}"`
-        args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"'
-        return args
-    })
+    // config.plugin('define').tap(args => {
+    //     const argv = process.argv
+    //     const mode = argv[argv.indexOf('--project-mode') + 1]
+    //     args[0]['process.env'].MODE = `"${mode}"`
+    //     args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"'
+    //     return args
+    // })
 
     // svg loader
     const svgRule = config.module.rule('svg') // 找到svg-loader
@@ -33,5 +33,18 @@ module.exports = {
     config.module
       .rule('images')
       .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
-  }
+  },
+
+  //配置端口
+  devServer: {
+    // open: process.platform === 'darwin',
+    // host: '0.0.0.0',
+    port: 8888,
+    https: false,
+    hotOnly: false,
+    proxy: null, // 设置代理
+    before: app => {}
+  },
+
+  lintOnSave: false,  // 取消eslint代码检测
 }
