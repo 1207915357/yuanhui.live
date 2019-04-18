@@ -7,17 +7,21 @@ export default new Vuex.Store({
   state: {
     userId:"",
     userName:"",
+    token: localStorage.getItem('token'),
     showLoading:false,
     barY_process: 0,
     vsElement:''
   },
   getters:{},
   mutations: {
-    handleUserId(state){
-      state.userId = Vue.prototype.$_getCookie('userId')
+    handleUserId(state,val){
+      // state.userId = Vue.prototype.$_getCookie('userId')
+      state.userId = val
     },
-    handleUserName(state) {
-      state.userName = Vue.prototype.$_getCookie('userName')
+    handleUserName(state,val) {
+      // state.userName = Vue.prototype.$_getCookie('userName')
+      state.userName = val
+
     },
     //控制全局loading动画
     handleLoading(state,val) {
@@ -29,6 +33,9 @@ export default new Vuex.Store({
     },
     getVsElement(state, val) {
       state.vsElement = val
+    },
+    setToken(state, val) {
+      state.token = val
     }
   },
   actions: {}

@@ -8,7 +8,10 @@ const user = {
     },
     register (params) {        
         return axios.post(`${base.dev}/register`,qs.stringify(params));    
-    }
+    },
+    getUserInfo() {
+       return axios.get(`${base.dev}/getUserInfo`);
+     }
 }
 
 export default user

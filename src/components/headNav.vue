@@ -32,7 +32,7 @@
         </el-menu> 
         <div class="headRight">
           <!-- 通知 -->
-          <notice class="noticeComponent" v-if="userId"></notice>
+          <notice class="noticeComponent" v-if="token"></notice>
           <!-- 登录 -->
           <login class="loginComponent"></login>
         </div>
@@ -57,7 +57,7 @@
       };
     },
     computed:{
-      ...mapState(['userId'])
+      ...mapState(['token'])
     },
     //  watch:{
     //   '$route':function(nowR,oldR){

@@ -1,7 +1,7 @@
 <template>
   <div id="login">
       <div class="userbox">
-          <div class="loginBtn" v-if='!userName'>
+          <div class="loginBtn" v-if='!token'>
             <el-button type="primary" size='small' @click="dialogFormVisible = true"><svg-icon icon-class='user' style="margin-right:6px;font-size:13px;"/>登录</el-button>
             <el-button type="danger" size='small' @click="dialogFormVisible2 = true" icon='el-icon-circle-plus-outline' plain>注册</el-button>
           </div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-
+  import {mapState, mapMutations } from 'vuex'
   export default {
     name:'login',
     data () {
@@ -87,8 +87,8 @@
       };
 
       return {
-        userName:"",
-        userId:"",
+        // userName:"",
+        // userId:"",
         dialogFormVisible: false,
         dialogFormVisible2: false,
         formLogin: {
@@ -111,8 +111,11 @@
         }
       };
     },
+    computed:{
+      ...mapState(['userId','userName','token'])
+    },
     methods: {
-     
+      ...mapMutations(['handleUserId','handleUserName','setToken']),
       //登陆
        submitFormLogin(formName) {
         this.$refs[formName].validate((valid) => {
@@ -120,18 +123,27 @@
             this.dialogFormVisible = false
             this.$api.user.login(this.formLogin)
             .then((data)=>{
-              console.log(data)
+              // console.log(data)
               if(data.code===1){
-                this.$message.success('登陆成功！')
-                this.userName = data.data.userName
-                this.userId = data.data.userId
-                this.$_setCookie("userName",this.userName,1)             
-                this.$_setCookie("userId",this.userId,1)  
-                this.$store.commit('handleUserId')  
-                this.$store.commit('handleUserName')  
-                console.log(this.$store.state.userId,'store')         
+                // this.$message.success('登陆成功！')
+                // this.userName = data.data.userName
+                // this.userId = data.data.userId
+                // this.$_setCookie("userName",this.userName,1)             
+                // this.$_setCookie("userId",this.userId,1)  
+                // this.$store.commit('handleUserId')  
+                // this.$store.commit('handleUserName')  
+
+
                 // this.$root.Bus.$emit('userId',this.userId)
-                // console.log(this.$root,'root')
+                this.$message.success('登陆成功！')
+
+                //保存token
+                const token = data.data.token
+                localStorage.setItem('token',token)
+                this.setToken(token)
+                this.getUserInfo()
+
+
               }else if(data.code===300){
                 this.$message.error('用户不存在！')
               }else if(data.code===301){
@@ -143,6 +155,23 @@
           }
         });
       },
+      //获取用户信息
+      getUserInfo(){
+        this.$api.user.getUserInfo()
+        .then((data)=>{
+          if(data.code == 1){
+            // this.userName = data.data.userName
+            // this.userId = data.data.userId
+            // this.$_setCookie("userName",this.userName,1)             
+            // this.$_setCookie("userId",this.userId,1)  
+            // this.$store.commit('handleUserId')  
+            // this.$store.commit('handleUserName')  
+            this.handleUserId(data.data.userId)
+            this.handleUserName(data.data.userName)
+          }
+        })
+      },
+
       //注册
        submitFormRegister(formName) {
         this.$refs[formName].validate((valid) => {
@@ -167,22 +196,28 @@
 
        //退出登陆
       loginout(){
-        this.$_setCookie("userName",this.userName,0)
-        this.$_setCookie("userId",this.userId,0)
-        this.$store.commit('handleUserId')
-        this.$store.commit('handleUserName')
-        this.userName = ''
+        // this.$_setCookie("userName",this.userName,0)
+        // this.$_setCookie("userId",this.userId,0)
+        // this.$store.commit('handleUserId')
+        // this.$store.commit('handleUserName')
+        // this.handleUserName(null)
+        // this.handleUserId(null)
+        this.setToken(null)
+        localStorage.removeItem('token')
       },
       //检查是否已经登陆
       checkCookie(){
-          var user= this.$_getCookie("userName");
-          var id= this.$_getCookie("userId");
-          if (user) {
-            this.userName = user
-            this.userId = id
-            this.$store.commit('handleUserId')  
-            this.$store.commit('handleUserName')  
+          let token = localStorage.getItem('token') 
+          // var user= this.$_getCookie("userName");
+          // var id= this.$_getCookie("userId");
+          if (token) {
+            // this.userName = user
+            // this.userId = id
+            // this.$store.commit('handleUserId')  
+            // this.$store.commit('handleUserId')  
             // this.$root.Bus.$emit('userId',this.userId)
+            this.setToken(token)  
+            this.getUserInfo()
           }
       },
 

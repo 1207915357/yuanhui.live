@@ -29,8 +29,8 @@
 </template>
 
 <script>
-  import editor from '@/components/editor.vue'
-  import MyComments from '@/components/MyComments.vue'
+  import editor from 'components/editor.vue'
+  import MyComments from 'components/MyComments.vue'
   export default {
     name:'articleDel',
     components:{
