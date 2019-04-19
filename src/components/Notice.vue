@@ -77,20 +77,20 @@
 
 <script>
   import Avatar from 'vue-avatar';
-  import {mapState} from 'vuex'
+  import {mapState,mapMutations} from 'vuex'
   export default {
     name:'notice',
     components:{
         Avatar
     },
     computed:{
-        ...mapState(['userId'])
+        ...mapState(['userId','unreadNum','commentNotice'])
     },
     data () {
       return {
           dialogVisible: false,
-          unreadNum:0,
-          commentNotice: [],
+        //   unreadNum:0,
+        //   commentNotice: [],
           noticeScroll: {
           bar: {
             keepShow:true,
@@ -114,17 +114,20 @@
     // },
 
      methods: {
-        //获取通知
-        getNotice(){
-            this.$api.notice.getNotice({userId:this.userId})
-            .then((data)=>{
-                console.log(data,'data')
-                if(data.code === 1){
-                    this.unreadNum = data.data.unreadNum
-                    this.commentNotice = data.data.commentNotice
-                }
-            })
-        },
+         ...mapMutations(['setUnreadNum','setCommentNotice']),
+        // //获取通知 (弃用)
+        // getNotice(){
+        //     this.$api.notice.getNotice({userId:this.userId})
+        //     .then((data)=>{
+        //         // console.log(data,'data')
+        //         if(data.code === 1){
+        //             this.unreadNum = data.data.unreadNum
+        //             this.commentNotice = data.data.commentNotice
+        //         }else{
+        //             this.$message.error(data.msg)
+        //         }
+        //     })
+        // },
         //跳转到文章详情
         turnToArticleDel(id){
             if(!id)return
@@ -147,7 +150,7 @@
             })
             .then((data)=>{
                 if(data.code === 1){
-                    this.unreadNum = 0
+                    this.setUnreadNum(0)
                 }
                 else{
                     this.$message.error('服务器错误')
@@ -163,7 +166,7 @@
             })
             .then((data)=>{
                 if(data.code === 1){
-                    this.commentNotice = []
+                    this.setCommentNotice([])
                 }
                 else{
                     this.$message.error('服务器错误')
@@ -172,7 +175,9 @@
         },
     },
     mounted(){
-      this.getNotice()
+    //   setTimeout(() => {
+    //       this.getNotice()
+    //   }, 500)
     }
 
   }

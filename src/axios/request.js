@@ -8,9 +8,12 @@ import {Message} from 'element-ui'
  * 请求失败后的错误统一处理 
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status, other) => {
-  // 状态码判断
+const errorHandle = (status, msg) => {
+  // 失败状态码判断
   switch (status) {
+      case 400:
+        Message.info('缺少必要参数!');
+        break;
       // 401: 未登录状态，跳转登录页
       case 401:
           // toLogin();
@@ -33,7 +36,7 @@ const errorHandle = (status, other) => {
         Message.info('服务器错误!');
         break;
       default:
-          console.log(other);   
+          console.log(msg);
       }}
 
 
@@ -64,10 +67,11 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(    
   // 请求成功
-  res => res.status === 200 ? Promise.resolve(res.data) : Promise.reject(res),    
+  res => res.status === 200? Promise.resolve(res.data) : Promise.reject(res),    
   // 请求失败
   error => {
       const { response } = error;
+      console.log(response,'res')
       if (response) {
           // 请求已发出，但是不在2xx的范围 
           errorHandle(response.status, response.data.msg);
@@ -78,6 +82,7 @@ instance.interceptors.response.use(
           // network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
           // 关于断网组件中的刷新重新获取数据，会在断网组件中说明
         //   store.commit('changeNetwork', false);
+        console.log('未知错误!')
       }
   });
 
