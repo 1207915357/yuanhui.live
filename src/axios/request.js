@@ -49,7 +49,6 @@ instance.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencod
 
 /** 
  * 请求拦截器 
- * 每次请求前，如果存在token则在请求头中携带token 
  */ 
 instance.interceptors.request.use(    
   config => {        
