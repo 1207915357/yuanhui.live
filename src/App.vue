@@ -19,7 +19,7 @@
   import headNav from '@/components/headNav.vue'
   import loadingBox from '@/components/loading.vue'
   export default {
-    name: "App",
+    name: "#app",
     components:{
       headNav,
       loadingBox

@@ -1,5 +1,5 @@
 const path = require('path')
-
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, './', dir)
 }
@@ -7,42 +7,77 @@ function resolve(dir) {
 module.exports = {
   lintOnSave: false, // 取消eslint代码检测
 
-  chainWebpack: config => {
-    // 这里是对环境的配置，不同环境对应不同的BASE_API，以便axios的请求地址不同
-    // config.plugin('define').tap(args => {
-    //     const argv = process.argv
-    //     const mode = argv[argv.indexOf('--project-mode') + 1]
-    //     args[0]['process.env'].MODE = `"${mode}"`
-    //     args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"'
-    //     return args
-    // })
+  // chainWebpack: config => {
+  //   // 这里是对环境的配置，不同环境对应不同的BASE_API，以便axios的请求地址不同
+  //   // config.plugin('define').tap(args => {
+  //   //     const argv = process.argv
+  //   //     const mode = argv[argv.indexOf('--project-mode') + 1]
+  //   //     args[0]['process.env'].MODE = `"${mode}"`
+  //   //     args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"'
+  //   //     return args
+  //   // })
 
-    // svg loader
-    const svgRule = config.module.rule('svg') // 找到svg-loader
-    svgRule.uses.clear() // 清除已有的loader, 如果不这样做会添加在此loader之后
-    svgRule.exclude.add(/node_modules/) // 正则匹配排除node_modules目录
-    svgRule // 添加svg新的loader处理
-      .test(/\.svg$/)
-      .use('svg-sprite-loader')
-      .loader('svg-sprite-loader')
-      .options({
-        symbolId: 'icon-[name]'
-      })
+  //   // svg loader
+  //   const svgRule = config.module.rule('svg') // 找到svg-loader
+  //   svgRule.uses.clear() // 清除已有的loader, 如果不这样做会添加在此loader之后
+  //   svgRule.exclude.add(/node_modules/) // 正则匹配排除node_modules目录
+  //   svgRule // 添加svg新的loader处理
+  //     .test(/\.svg$/)
+  //     .use('svg-sprite-loader')
+  //     .loader('svg-sprite-loader')
+  //     .options({
+  //       symbolId: 'icon-[name]'
+  //     })
 
-    // 修改images loader 添加svg处理
-    const imagesRule = config.module.rule('images')
-    imagesRule.exclude.add(resolve('src/icons'))
-    config.module
-      .rule('images')
-      .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
-    //配置alias
-     config.resolve.alias
-       .set('@', resolve('src'))
-       .set('assets', resolve('src/assets'))
-       .set('components', resolve('src/components'))
-       .set('static', resolve('src/static'))
+  //   // 修改images loader 添加svg处理
+  //   const imagesRule = config.module.rule('images')
+  //   imagesRule.exclude.add(resolve('src/icons'))
+  //   config.module
+  //     .rule('images')
+  //     .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
+  //   //配置alias
+  //    config.resolve.alias
+  //      .set('@', resolve('src'))
+  //      .set('assets', resolve('src/assets'))
+  //      .set('components', resolve('src/components'))
+  //      .set('static', resolve('src/static'))
 
+  //       // config.plugins.push(new SkeletonWebpackPlugin({
+  //       //   webpackConfig: {
+  //       //     entry: {
+  //       //       app: resolve('skeleton.js'),
+  //       //     },
+  //       //   },
+  //       //   minimize: true,
+  //       //   quiet: true,
+  //       // }))
+
+        
+
+  // },
+  configureWebpack: {
+    plugins: [
+      new SkeletonWebpackPlugin({
+        webpackConfig: {
+          entry: {
+            app: path.join(__dirname, './src/skeleton.js'),
+          },
+        },
+        minimize: true,
+        quiet: true,
+      }),
+    ],
   },
+
+ // css相关配置
+ css: {
+   // 是否使用css分离插件 ExtractTextPlugin
+   extract: true,
+   // 开启 CSS source maps?
+   sourceMap: false,
+   // 启用 CSS modules for all css / pre-processor files.
+   modules: false
+ },
 
   //配置端口
   devServer: {

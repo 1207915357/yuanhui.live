@@ -20,7 +20,7 @@
             <i class="iconfont icon-guanyuwomen myicon"></i>
             <span>关于</span>
           </el-menu-item>
-          <el-submenu index="/manage">
+          <el-submenu index="/manage" v-if="userType==0?true:false">
             <template slot="title">
               <i class="iconfont icon-guanli myicon" style="font-size:16px"></i>
               <span>管理</span>
@@ -57,7 +57,7 @@
       };
     },
     computed:{
-      ...mapState(['token'])
+      ...mapState(['token','userType'])
     },
     //  watch:{
     //   '$route':function(nowR,oldR){

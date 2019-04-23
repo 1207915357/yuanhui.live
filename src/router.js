@@ -77,28 +77,37 @@ const router = new Router({
         title: '文章详情'
       }
     },
+    {
+      path: '/401',
+      name: '401',
+      component: () => import('@/views/other/401.vue'),
+      meta: {
+        title: '无权限'
+      },
+      hidden: true 
+    },
      {
        path: '*',
        name: '404',
-       component: () => import('@/views/404.vue'),
+       component: () => import('@/views/other/404.vue'),
        meta: {
          title: 'not found!!!'
        },
-       hidden: true // ?
+       hidden: true // 不在菜单显示
      }
    
   ]
 })
 
 //需要权限路由
-export const asyncRouterMap = [
+const asyncRouterMap = [
    {
      path: '/manage/publish',
      name: 'publish',
      component: () => import('@/views/manage/publish.vue'),
       meta: {
        title: '文章发布',
-       role: ['admin'] //权限页面
+       role: ['0'] //权限页面
      },
    },
   //  {
@@ -147,10 +156,12 @@ router.beforeEach((to, from, next) => {
   }
 
   if (store.state.token) {
-
+    if(store.state.userType == 0){
+      router.addRoutes(
+        asyncRouterMap
+      )
+    }
   }
-
-
   next()
 })
 

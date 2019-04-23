@@ -115,7 +115,7 @@
       ...mapState(['userId','userName','token'])
     },
     methods: {
-      ...mapMutations(['handleUserId','handleUserName','setUnreadNum','setCommentNotice','setToken']),
+      ...mapMutations(['handleUserId','handleUserName','handleUserType','setUnreadNum','setCommentNotice','setToken','set_loginOut']),
       //登陆
        submitFormLogin(formName) {
         this.$refs[formName].validate((valid) => {
@@ -150,6 +150,7 @@
           if(data.code == 1){
             this.handleUserId( data.data.userId)
             this.handleUserName( data.data.userName)
+            this.handleUserType( data.data.type)
             this.setUnreadNum( data.data.unreadNum)
             this.setCommentNotice( data.data.commentNotice)
           }else{
@@ -185,6 +186,7 @@
         // this.$_setCookie("userName",this.userName,0)
         // this.$_setCookie("userId",this.userId,0)
         this.setToken(null)
+        this.set_loginOut()
         localStorage.removeItem('token')
       },
       //检查是否已经登陆

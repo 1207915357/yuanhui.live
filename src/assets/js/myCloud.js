@@ -13,7 +13,8 @@ export default function (option,callback) {
        .size(theSize)
        .words(theWordList)
        .padding(5)
-       .rotate(function () {return ~~(Math.random() * 3) * 30;})
+      //  .rotate(function () {return ~~(Math.random() * 3) * 30;})
+       .rotate(0)
        .font("Impact")
        .fontSize(function (d) {return d.size;})
        .on("end", draw);
@@ -21,9 +22,9 @@ export default function (option,callback) {
      layout.start();
 
      function draw(words) {
-       let color = d3.scaleOrdinal(d3.schemePaired);
-      // let color = d3.scaleOrdinal(d3.schemeCategory10);
-      // let color = d3.scaleOrdinal(d3.schemeCategory10);
+      //  let color = d3.scaleOrdinal(d3.schemePaired);
+      let color = d3.scaleOrdinal(d3.schemeCategory10);
+      // let color = d3.scaleOrdinal(d3.schemeCategory20);
       // 注意点: 如果使用的是 d3.schemeCategory20 会报错,可能是最新的d3删除了这个属性;可以去d3官方文档查看下;
        d3.select(theSvgElement)
          .append("svg")

@@ -12,7 +12,7 @@ import '@/assets/js/fun.js' //公共方法js
 import api from './api' // 导入api接口
 Vue.prototype.$api = api; // 将api挂载到vue的原型上
 
-//socket.io
+//socket.io  df
 // import SocketIO from 'socket.io-client';
 // import VueSocketIO from 'vue-socket.io'
 // const options = {path: ''}; //Options object to pass into SocketIO
@@ -35,7 +35,7 @@ Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 
-new Vue({
+const app = new Vue({
   router,
   store,
   data:{
@@ -45,3 +45,14 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
+window.mountApp = () => {
+  app.$mount('#app');
+};
+
+if (process.env.NODE_ENV === 'production') {
+  if (window.STYLE_READY) {
+    window.mountApp();
+  }
+} else {
+  window.mountApp();
+}
