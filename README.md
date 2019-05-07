@@ -1,5 +1,7 @@
 ## vue+node+mongodb 搭建博客(2019-1-22)
 
+### 项目规划
+
 > ![123](http://pn5j4crh2.bkt.clouddn.com/12890819-b80e851e00eb58b6.jpg)
 >
 > 计划实现功能（五大模块）
@@ -8,6 +10,7 @@
 >
 > 1.  文章内容展示，分类导航，作者头像简单介绍
 > 2.  首屏动画（rainbow）
+> 3.  背景音乐播放器
 >
 > 二. 生活（分享）
 >
@@ -41,9 +44,7 @@
 > 10. 点赞，评论
 > 11. 分类与归档
 > 12. egg.js
-> 13. ​
-
-
+> 13. node 爬虫
 
 
 
@@ -171,7 +172,7 @@ this.$api.user.login()
 - `npm koa -S ` [koa中文文档](https://demopark.github.io/koa-docs-Zh-CN/)
 - `npm i nodemon -S`  热重启, 使用 nodemon ./app 命令启动项目  [nodemon](https://www.npmjs.com/package/nodemon)
 
-##### 1.1安装一系列依赖 
+#### 2. 安装一系列依赖 
 
 - `npm i koa2-cors` (解决跨域)  [koa2-cors](https://www.npmjs.com/package/koa2-cors)
 - `npm i koa-bodyparser` (解析接收的参数)  [koa-bodyparser](https://www.npmjs.com/package/koa-bodyparser)
@@ -179,24 +180,55 @@ this.$api.user.login()
 - `npm i mongoose` (操作MongoDB)  [mongoose](https://www.npmjs.com/package/mongoose)
 - `npm i uuid` (生成唯一id插入数据库) [uuid](https://www.npmjs.com/package/uuid)
 
-##### 1.2 注册登录接口
+#### 3. 注册登录接口
 
-- 使用nodejs自带的` crypto`模块加密 
+##### 3.1 使用nodejs自带的` crypto`模块加密 
+
+```javascript
+const crypto = require('crypto')
+const cryptoPwd = function(password,salt){
+    const saltPassword = password + ':' + salt
+    const md5 = crypto.createHash('md5')
+    const result = md5.update(saltPassword).digest('hex')
+    return result;
+}
+```
+##### 3.2 使用Token进行身份验证 | 缓存options请求
+
+- [Token 认证的来龙去脉](https://segmentfault.com/a/1190000013010835)
+
+- [基于 Token 的身份验证：JSON Web Token](https://ninghao.net/blog/2834)
 
   ```javascript
-  const crypto = require('crypto')
-  const cryptoPwd = function(password,salt){
-      const saltPassword = password + ':' + salt
-      const md5 = crypto.createHash('md5')
-      const result = md5.update(saltPassword).digest('hex')
-      return result;
+  //生成token
+  const getToken = function (payload= {} ) {
+       var token = jwt.sign(payload, config.secret, {
+          //  algorithm: 'HS256', //算法
+           expiresIn: '2h' //Token过期时间
+       });
+       return token
   }
+  //通过token获取JWT的payload,验证并解析JWT
+  const getJWTPayload = function(token) {
+     return jwt.verify(token, config.secret, (error, decoded) => {
+          if(error){
+              console.log(error.message)
+              return 
+          }
+          return decoded
+      });
   ```
 
-- [了解token的使用,密码加密](https://juejin.im/entry/58c3bfac570c35006d5b23dc)  (本项目中选择了简单的验证cookie)
+  - [登录权限篇](https://juejin.im/post/591aa14f570c35006961acac)
 
-  - [Token 认证的来龙去脉](https://segmentfault.com/a/1190000013010835)
+- 如何避免options预检请求？（非简单请求...会出现options请求）
 
+  可设置 Access-Control-Max-Age:86400  // 缓存预检请求,一段时间内不在出现options请求;
+
+  参考文章: 
+
+  - [跨域资源共享—CORS](https://juejin.im/post/5bfa5f8e6fb9a049a7117b67)
+  - [node.js 应答跨域请求实现 （以koa2-cors为例）](https://www.jianshu.com/p/5b3acded5182)
 
 
 
@@ -461,24 +493,22 @@ this.$api.user.login()
    });
 
    router.post('/article/uploadCover', upload.single('file'), article_controller.uploadCover);
-   ```
-
 
    module.exports = router;
    ```
 
-   - aritcle_controller.js 接口
+- aritcle_controller.js 接口
 
-   ```javascript
-   //图片上传
-   const uploadCover = async(ctx, next)=>{
-        let pictureUrl = `${config.severUrl}:${config.port}/articleCover/${ctx.req.file.filename}`
-        ctx.body = {
-           filename: ctx.req.file.filename, //返回文件名
-           pictureUrl: pictureUrl  //前端直接调用的地址
-        }
-   }
-   ```
+  ```javascript
+  //图片上传
+     const uploadCover = async(ctx, next)=>{
+         let pictureUrl = `${config.severUrl}:${config.port}/articleCover/${ctx.req.file.filename}`
+         ctx.body = {
+             filename: ctx.req.file.filename, //返回文件名
+             pictureUrl: pictureUrl  //前端直接调用的地址
+         }
+     }
+  ```
 
  - 必须要开放public这个文件夹作为静态资源
 
@@ -496,7 +526,7 @@ markdown中图片的上传
 
 ***
 
-### 三、知识拓展 记录问题
+### 三、技术梳理 | 知识拓展 | 问题记录
 
 - less:hover .other{}不起作用   .less{ ::before}为什么选中了全部子元素
 - vuejs 失去焦点，点击全局隐藏某些浮动元素 https://segmentfault.com/q/1010000007444595
@@ -526,8 +556,6 @@ markdown中图片的上传
 - 开启gzip
 
 - hiper 性能分析工具
-
-- 骨架屏
 
 - v-model 实现父子组件通信，双向绑定数据
 
@@ -561,19 +589,6 @@ markdown中图片的上传
     }
   ```
 
-- mongoose findOneAndUpdate 操作 规范
-
-  ```javascript
-   var user = await User_col.findOne({userId})
-   //  likeArticle = user.likeArticle.push(articleId)   //这里不能直接push           
-    likeArticle = user.likeArticle
-    likeArticle.push(articleId)
-    await User_col.updateOne({
-        userId
-      }, {
-        likeArticle
-      })
-  ```
 
 
 - 参考博客：http://120.79.10.11:8001/    http://biaochenxuying.cn/
@@ -638,27 +653,227 @@ markdown中图片的上传
 
 - 详见文章 [vue中使用d3-cloud词云]()
 
-#### 3.6 评论通知
+#### 3.6 消息通知系统
+
+##### 3.6.1 后台node新建独立通知模块	
+
+- 在`model/user.js` 的 `schema` 中添加参数对象 
+
+- 新建路由文件 `notice-router.js `
+
+  - 引入`koa-router`
+  - 新建路由 
+  - 接口挂载到路由
+  - 导出路由
+
+  ```javascript
+  const Router = require('koa-router');
+  const router = new Router();
+  const notice_controller = require('../controllers/notice_controller');
+
+  router.post('/notice/publishNotice', notice_controller.publishNotice);
+
+  module.exports = router;
+  ```
+
+- 新建控制器文件 `notice_controller.js`
+
+  - 导入需要用到的model文件
+  - 新建方法对象
+  - 导出对象
+
+  ```javascript
+  const Article_col = require('../model/article');
+  const User_col = require('../model/user');
+
+  //发布通知消息
+  const publishNotice = async (ctx, nest) => { }
+
+  module.exports = {
+       publishNotice,
+  }
+  ```
+
+- 最后在 app.js 中 引入 notice路由模块,再挂载到 app 上
+
+  ```javascript
+  const notice_router = require('./api/notice-router.js');
+  app.use(notice_router.routes()).use(notice_router.allowedMethods())
+  ```
+
+##### 3.6.2 前端vue新建独立api模块
+
+- `src/api` 新建 notice.js 文件 
+
+  ```javascript
+  // 通知消息模块api
+  import base from './base'; // 导入接口域名列表
+  import axios from '@/axios/request'; // 导入request中创建的axios实例
+  import qs from 'qs'; // 根据需求是否导入qs模块
+
+  const notice = {
+      publishNotice(params) {
+          return axios.post(`${base.dev}/notice/publishNotice`,qs.stringify(params));
+      },
+  }
+
+  export default notice
+  ```
+
+- 在`api/index.js` 中引入和导出
+
+  ```javascript
+  //通知模块
+  import notice from '@/api/notice';
+  // 导出接口
+  export default {    
+      notice,
+      // ……
+  }
+  ```
+
+- 在`Notice.vue`中使用 
+
+  ```javascript
+   this.$api.notice.publishNotice({userId:this.userId})
+       .then((data)=>{})
+  ```
+
+##### 3.6.3 功能实现
 
 - 用户评论文章,通知作者; 
+
 - 回复用户通知被回复用户;
-- 用户第一次登陆默认发送一个欢迎的通知
+
+- 用户第一次登陆默认发送一个欢迎的通知,注册时插入一条数据
+
 - vue 中使用 vue-socket  stock.io
+
+- 新发布一片文章时给用户发送一条通知 
+
+  ```js
+   const updateAllUser = await User_col.updateMany(
+          {userId: {$ne: userId}},
+          {
+              '$inc': {
+                  'unreadNum': 1
+              },
+              '$push': {
+                  'commentNotice': noticeObj
+              }
+          }
+      )
+  ```
+
+
 - 流程设计：
-  1. 用户评论文章，存储用户ID，文章作者ID，文章ID，用户评论到一个表（我直接存储到了用户信息的表里commentNotice 数组里）同时把记录通知的值加一，用户登录自动请求获取用户信息接口，如果用户信息里的commentNotice 数组里有值表示有消息通知并显示这些列表。用户查看通知把记录通知的值再赋值为0；
-  2. ​
+
+  用户评论文章，存储用户ID，文章作者ID，文章ID，用户评论到一个表（我直接存储到了用户信息的表里commentNotice 数组里）同时把记录通知的值加一，用户登录自动请求获取用户信息接口，如果用户信息里的commentNotice 数组里有值表示有消息通知并显示这些列表。用户查看通知把记录通知的值再赋值为0；
+
+#### 3.7 侧边栏吸顶效果
+
+> 参考  [4 种滚动吸顶实现方式的比较](https://juejin.im/post/5caa0c2d51882543fa41e478#heading-3)
+
+#### 3.8 添加路由权限
+
+> 参考 [带你用vue撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac#heading-4)
+
+  补充: [export 和 export default 的区别](https://segmentfault.com/a/1190000010426778)
+
+- export与export default均可用于导出常量、函数、文件、模块等
+- 在一个文件或模块中，export、import可以有多个，export default仅有一个
+- 通过export方式导出，在导入时要加{ }，export default则不需要
+- export能直接导出变量表达式，export default不行。
+
+
+#### 3.9 骨架屏 
+
+> [为vue项目添加骨架屏](https://xiaoiver.github.io/coding/2017/07/30/%E4%B8%BAvue%E9%A1%B9%E7%9B%AE%E6%B7%BB%E5%8A%A0%E9%AA%A8%E6%9E%B6%E5%B1%8F.html)
+>
+> [vue-skeleton-webpack-plugin](https://github.com/lavas-project/vue-skeleton-webpack-plugin)
+>
+> [vue-cli3配置骨架屏方案](https://blog.csdn.net/qq_33551792/article/details/89538360)
+
+- 采坑: 
+  npm install vue-skeleton-webpack-plugin 
+  报错:  `Error: EPERM: operation not permitted, rename ...  errno: -4048`
+  表示没有权限,可以把vue页面的服务先关掉,然后再npm,我的是这样解决的!
+
+- vue.config.js 配置  [附上一张配置清单](https://juejin.im/post/5bd02f98e51d457a944b634f)
+
+  ```javascript
+  const path = require('path')
+  const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
+  function resolve(dir) {
+    return path.join(__dirname, './', dir)
+  }
+  module.exports = {
+    chainWebpack: config => {},
+    configureWebpack: {
+      plugins: [
+        new SkeletonWebpackPlugin({
+          webpackConfig: {
+            entry: {
+              app: resolve('src/assets/js/skeleton.js'),
+            },
+          },
+          minimize: true,
+          quiet: true,
+        }),
+      ],
+    },
+   // css相关配置
+   css: {
+     // 是否使用css分离插件 ExtractTextPlugin
+     extract: true,
+     // 开启 CSS source maps?
+     sourceMap: false,
+     // 启用 CSS modules for all css / pre-processor files.
+     modules: false
+   }  
+  }
+  ```
+
+- 配置完后需要重启服务才能生效,有时哪个地方配置错误,可能会出启动编译错误或编译到百分之几十的时候就停止了!这是需要检查配置的文件路径及代码是否规范错误!
+
+- 如果出现错误实在不知从哪里解决,可以搭一个新的测试vue项目,再配置骨架屏!测试项目可以显示,再跟自己项目做对比找出错误!(一开始我也找不到哪里的问题一直编译错误,然后我是这么解决的!哈哈...)
+
+
+#### 3.10 TypeScript 应用
 
 
 
-### 四、日志
+------
 
-#### 4.1 项目完成进度 
+
+
+### 四、博客后台管理系统   vue-element-admin
+
+#### 4.1功能
+
+- 用户管理 , 用户分析 , 流量统计 ,用户权限设置 , 用户评论数分析
+- 文章管理 , 草稿 , 
+- 评论管理 , 审核
+- 发布通知
+- 标签管理
+
+
+
+
+
+### 五、小程序版本  Taro  mpVue	
+
+
+
+### 六、日志
+
+#### 6.1 项目完成进度 
 
 - 2019
 - 2.27 完成了文章点赞 git上传
 - 2.28 样式优化，滚动条 [Vuescroll.js](https://vuescrolljs.yvescoding.org/zh/)
-- 3.1 评论模块 
-- 3.6 完成评论功能  
+- 3.01 评论模块 
+- 3.06 完成评论功能  
 - 3.11 分类,归档,标签功能 
 - 3.13 完成归档标签分类功能
 - 3.14 添加返回顶部功能 | vuex全局加载Loading动画.
@@ -668,18 +883,39 @@ markdown中图片的上传
 - 3.25 分类标签词云d3  async的使用
 - 3.26 消息通知系统设计
 - 4.01 - 4.03 完成评论消息通知功能
-- 4.04 优化
+- 4.04 优化通知系统
+- 4.08 独立通知模块,增加发布文章通知全部用户功能
+- 4.09 使用更新器`$inc $push`(原子操作) 优化 mongoDB update 语法 
+  -  左侧栏添加最热文章
+  -  router-link路由跳转只局部渲染更改了的页面(diff算法),a标签跳转会重新渲染整个页面
+  -  路由的滚动 `scrollBehavior`
+- 4.10 详情页作者介绍 
+- 4.11 添加作者个性化vip身份标识
+- 4.15 ...
+- 4.16 后台管理搭建 vue-element-admin 了解
+- 4.17- 4.18 api添加token认证  |  
+  - 如何避免options？（跨域预请求非简单请求是无法避免,可以缓存让它只请求一次）
+    设置 Access-Control-Max-Age:86400  // 缓存预检请求
+- 4.19 notice通知模块使用vuex优化
+- 4.22 添加404页面 | 路由权限
+- 4.23  骨架屏搭建 |  401页面
+- 4.24 骨架屏实现
+- ...
+- 5.06 骨架屏实现 (未实现,配置??,bug)
+- 5.07 首页骨架屏实现(创建新项目能实现,再移植到本项目中能实现,不知道之前为什么一直不行!,:哭笑)
 - ​
--  最热文章 ||   搜索文章分页处理
-- 后台管理搭建
+- 侧边栏吸顶 | 详情页大纲导航栏 markdown样式 | 图片存储方式 | 响应式 rem vh | 打包部署 | swagger |
+- 微信小程序 |  typeScript 构建 
+- 云服务器
 
-#### 4.2 遗留bug
+#### 6.2 遗留bug
 
 - 登陆或注销状态 cookie不能及时刷新
 - 定位 使用vuescroll
 - bug :点击其他地方不能关闭评论框
 - 归档：时间划线问题   github 时间选择菜单
 - 菜单导航不根据 路由动态变化   跳转时去掉导航激活状态
+- 详情页代码界面样式需要刷新才加载
 
 ***
 

@@ -218,4 +218,8 @@
     font-size: 20px;
     color: #eee;
   }
+.loginBox /deep/ .el-form-item__label{
+    text-align: justify;
+    text-align-last: justify;
+  }
 </style>

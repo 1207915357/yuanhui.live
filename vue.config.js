@@ -1,9 +1,8 @@
 const path = require('path')
-// const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, './', dir)
 }
-
 module.exports = {
   lintOnSave: false, // 取消eslint代码检测
 
@@ -41,43 +40,31 @@ module.exports = {
        .set('assets', resolve('src/assets'))
        .set('components', resolve('src/components'))
        .set('static', resolve('src/static'))
-
-        // config.plugins.push(new SkeletonWebpackPlugin({
-        //   webpackConfig: {
-        //     entry: {
-        //        app: path.join(__dirname, './src/skeleton.js'),
-        //     },
-        //   },
-        //   minimize: true,
-        //   quiet: true,
-        // }))
-
-        
-
   },
-  // configureWebpack: {
-  //   plugins: [
-  //     new SkeletonWebpackPlugin({
-  //       webpackConfig: {
-  //         entry: {
-  //           app: path.join(__dirname, './src/skeleton.js'),
-  //         },
-  //       },
-  //       minimize: true,
-  //       quiet: true,
-  //     }),
-  //   ],
-  // },
 
-//  // css相关配置
-//  css: {
-//    // 是否使用css分离插件 ExtractTextPlugin
-//    extract: true,
-//    // 开启 CSS source maps?
-//    sourceMap: false,
-//    // 启用 CSS modules for all css / pre-processor files.
-//    modules: false
-//  },
+  configureWebpack: {
+    plugins: [
+      new SkeletonWebpackPlugin({
+        webpackConfig: {
+          entry: {
+            app: resolve('src/assets/js/skeleton.js'),
+          },
+        },
+        minimize: true,
+        quiet: true,
+      }),
+    ],
+  },
+
+ // css相关配置
+ css: {
+   // 是否使用css分离插件 ExtractTextPlugin
+   extract: true,
+   // 开启 CSS source maps?
+   sourceMap: false,
+   // 启用 CSS modules for all css / pre-processor files.
+   modules: false
+ },
 
   //配置端口
   devServer: {

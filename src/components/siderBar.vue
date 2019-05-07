@@ -2,12 +2,13 @@
   <div class="siderBar">
     <!-- 介绍信息 -->
     <div class="author">
-        <img src="@/assets/imgs/avatar.jpg" alt="">
+        <img class="avatarImg" src="@/assets/imgs/avatar.jpg" alt="">
         <h3>看不见的城</h3>
         <p>刻意练习方能精通</p>
         <ul class="myLink">
-            <li><i class="iconfont icon-githublogo"></i><a href="https://github.com/1207915357" target="blank">github</a></li>
-            <li><i class="iconfont icon-juejin"></i><a href="https://juejin.im/user/59ec207f6fb9a0452845a173" target="blank">juejin</a></li>
+            <li><a href="https://github.com/1207915357" target="blank"><i style='color:#333;' class="iconfont icon-githublogo"></i></a></li>
+            <li><a href="https://juejin.im/user/59ec207f6fb9a0452845a173" target="blank"><i style='color:#006cff;' class="iconfont icon-juejin"></i></a></li>
+            <li><a href="https://segmentfault.com/u/kanbujiandecheng" target="blank"><i style='color:#009a61;' class="iconfont icon-iconsf-copy"></i></a></li>
         </ul>
     </div>
     <!-- 搜索框 -->
@@ -26,7 +27,7 @@
             <li class="hotArticle" v-for="(item,index) in articleList" :key="index">
                 <a @click='turnTo(item.articleId)'>
                     <p class="articleText">{{item.title}}</p>
-                    <span class="articleTime">{{formatTime(item.creatTime,'YYYY-MM-DD')}}</span>
+                    <span class="articleTime">{{formatTime(item.created_time,'YYYY-MM-DD')}}</span>
                 </a>
             </li>
         </ul>
@@ -161,6 +162,13 @@
              width: 132px;
              height: 132px;
              margin: 10px 0 20px;
+             &:hover{
+                transform: rotate(666turn);
+                // transition-delay: 1s;
+                transition-property: all;
+                transition-duration: 59s;
+                transition-timing-function: cubic-bezier(.34,0,.84,1);
+             }
          }
          p{
              margin: 10px 0;
