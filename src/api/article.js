@@ -46,6 +46,10 @@ const article = {
   getTagList(params){
     return axios.post(`${base.dev}/tag/getTagList`, qs.stringify(params));
   },
+  //category
+  getCategoryList(params){
+    return axios.post(`${base.dev}/category/getCategoryList`,qs.stringify(params));
+  }
   
 }
 

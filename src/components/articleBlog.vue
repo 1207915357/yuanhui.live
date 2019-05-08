@@ -5,6 +5,8 @@
           <!-- <el-tag class="articleTag"  size="mini" type="danger">{{formatTime(article.created_time,'YYYY-MM-DD')}}</el-tag> -->
         <h2 class="title">
           <a href="javascript:void(0)">{{article.title}}</a>
+          <el-tag v-if='article.category' class="articleTag" size="small" type="danger">{{article.category}}</el-tag>
+          <span v-if='article.category' style='padding-left:5px;color:#2ca02c;'>|</span>
           <el-tag class="articleTag" v-for="(item,index) in article.tags" :key="index" size="small" type="">{{item}}</el-tag>
         </h2>
         <div class="content">
@@ -84,6 +86,9 @@ export default {
     padding-left: 30px;
     .title{
       padding-bottom: 10px; 
+      a{
+        vertical-align: middle;
+      }
     }
     .content { 
       max-height:90px;
@@ -123,7 +128,7 @@ export default {
   }
 
   .articleBlog .articleTag{
-    margin-left:  10px;
+    margin-left:  5px;
   }
 </style>
 

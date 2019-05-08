@@ -6,9 +6,9 @@
         <h3>看不见的城</h3>
         <p>刻意练习方能精通</p>
         <ul class="myLink">
-            <li><a href="https://github.com/1207915357" target="blank"><i style='color:#333;' class="iconfont icon-githublogo"></i></a></li>
-            <li><a href="https://juejin.im/user/59ec207f6fb9a0452845a173" target="blank"><i style='color:#006cff;' class="iconfont icon-juejin"></i></a></li>
-            <li><a href="https://segmentfault.com/u/kanbujiandecheng" target="blank"><i style='color:#009a61;' class="iconfont icon-iconsf-copy"></i></a></li>
+            <li><a href="https://github.com/1207915357" target="blank" title='github'><i style='color:#333;' class="iconfont icon-githublogo"></i></a></li>
+            <li><a href="https://juejin.im/user/59ec207f6fb9a0452845a173" target="blank" title='juejing'><i style='color:#006cff;' class="iconfont icon-juejin"></i></a></li>
+            <li><a href="https://segmentfault.com/u/kanbujiandecheng" target="blank" title='segmentfault'><i style='color:#009a61;' class="iconfont icon-iconsf-copy"></i></a></li>
         </ul>
     </div>
     <!-- 搜索框 -->

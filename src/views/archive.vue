@@ -6,21 +6,34 @@
     </div> -->
     <div class="contentBox">
       <div class="tagBox">
-        <h3 class="tagBoxTitle">分类标签</h3>
-        <el-badge   
-                    :value="AllLength" 
-                    class="tagClass" 
-                    >
-          <el-tag @click='getArticleList("All")' size="small">All</el-tag>
-        </el-badge>
-        <el-badge  v-for="(item,index) in tagList" 
-                    :key="index"  
-                    :value="item.count" 
-                    class="tagClass" 
-                    >
-          <el-tag @click='getArticleList(null,item.tagName)' size="small">{{item.tagName}}</el-tag>
-        </el-badge>
+        <!-- <h3 class="tagBoxTitle">分类标签</h3> -->
+        <el-tabs type="border-card">
+          <el-tab-pane label="分类">
+            <el-badge :value="AllLength" class="tagClass" >
+              <el-tag @click='getArticleList("All")' size="small">全部</el-tag>
+            </el-badge>
+             <el-badge  v-for="(item,index) in categoryList" 
+                        :key="index"  
+                        :value="item.count" 
+                        class="tagClass" >
+              <el-tag @click='getArticleList(null,null,item.categoryName)' size="small">{{item.categoryName}}</el-tag>
+            </el-badge>
+          </el-tab-pane>
+          <el-tab-pane label="标签">
+            <el-badge :value="AllLength" class="tagClass" >
+              <el-tag @click='getArticleList("All")' size="small">All</el-tag>
+            </el-badge>
+            <el-badge  v-for="(item,index) in tagList" 
+                        :key="index"  
+                        :value="item.count" 
+                        class="tagClass" >
+              <el-tag @click='getArticleList(null,item.tagName)' size="small">{{item.tagName}}</el-tag>
+            </el-badge>
+          </el-tab-pane>
+        </el-tabs>
+        
       </div>
+
 
       <div class="timelineBox">
           <el-timeline>
@@ -81,6 +94,7 @@
         }
         ],
         tagList:[],
+        categoryList:[],
         AllLength:'',
       };
     },
@@ -94,11 +108,11 @@
         this.$router.push({path:`/articleDel/${id}`})
       },
       //文章列表
-      getArticleList(type,tagName){
+      getArticleList(type,tagName,categoryName){
         // this.handleLoading(true)
-        let content  = tagName || 'All The'
+        let content = tagName || categoryName || 'All The' ;
         this.ListTitle[0].content = `${content} List`;
-        this.$api.article.articleList({type:"article",tagName,start:0,rows:1000})
+        this.$api.article.articleList({type:"article",tagName,categoryName,start:0,rows:1000})
         .then((data)=>{
           if(data.code===1){
             // this.handleLoading(false)
@@ -143,12 +157,30 @@
           }
         )
       },
+      //category列表
+      getCategoryList(){
+        this.$api.article.getCategoryList({})
+        .then((data)=>{
+          // console.log(data)
+            if(data.code===1){
+              this.categoryList = data.data
+            }else{
+              this.$message({
+              type:'error',
+              message:'server error!',
+              duration: 1500
+            })
+            }
+          }
+        )
+      },
 
     },
 
     mounted() {
       this.getArticleList("All")
       this.getTagList()
+      this.getCategoryList()
     },
 
   }
@@ -166,11 +198,13 @@
       // margin-left: 260px;
       margin-top: 3px;
       background: #f1f2f6;
-      padding: 50px;
+      // padding: 50px;
 
     }
     .timelineBox{
-      margin-top: 50px;
+      // margin-top: 50px;
+      padding: 50px;
+
     }
   }
   .archive /deep/ .el-timeline-item__content .timeTitle{
@@ -212,5 +246,15 @@
     }
   } 
 
-
+ .tagBox /deep/ .el-tabs--border-card>.el-tabs__header .el-tabs__item {
+    font-weight: 700;
+}
+ .tagBox /deep/ .el-tabs__nav{
+   text-align: center;
+   float:none;
+}
+ .tagBox /deep/ .el-tabs__content{
+   padding:16px 50px;
+   text-align: center;
+}
 </style>

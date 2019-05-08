@@ -10,8 +10,22 @@
       </el-input>
 
        <el-select
-       class="c"
-        style="width:355px;"
+        style="width:155px;"
+        v-model="categoryValue"
+        filterable
+        allow-create
+        default-first-option
+        placeholder="请选择分类">
+        <el-option
+          v-for="item in categoryOption"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value">
+        </el-option>
+      </el-select>
+
+       <el-select
+        style="width:300px;"
         v-model="tagValue"
         multiple
         filterable
@@ -87,6 +101,7 @@
         articleType:"",
         articleId:"",
 
+        tagValue:[],
         tagOption:[
           {
             value: 'VUE',
@@ -101,7 +116,29 @@
             label: 'JS'
           }
         ],
-        tagValue:[]
+        categoryValue:"",
+        categoryOption:[
+          {
+            value: '框架',
+            label: '框架'
+          },
+          {
+            value: '数据库',
+            label: '数据库'
+          },
+          {
+            value: '服务器',
+            label: '服务器'
+          },
+          {
+            value: 'HTML',
+            label: 'HTML'
+          },
+          {
+            value: 'JS',
+            label: 'JS'
+          }
+        ],
 
       };
     },
@@ -115,7 +152,7 @@
      
       //文章发布
       publish(){
-        if(this.tagValue.length<1||this.mdCode == ""||this.title==""){
+        if(this.tagValue.length<1||this.categoryValu == ""||this.mdCode == ""||this.title==""){
           this.$message({type:'info',message:'请输入完整信息',duration:1500})
           return
         }
@@ -124,6 +161,7 @@
               title:this.title,
               pictureUrl:this.pictureUrl,
               tags:this.tagValue,
+              category:this.categoryValue,
               authorId: this.userId
             }).then((data)=>{
               if(data.code===1){
@@ -258,7 +296,7 @@
       color: #fff;
   }
   .articleTitle{
-    width: calc(100% - 602px);
+    width: calc(100% - 700px);
   }
   .el-button--mini, .el-button--small {
     border-radius: 0px; 
