@@ -53,7 +53,7 @@ export default {
 
       //获取列表
     getList(type){
-        this.$api.article.articleList({type:type})
+        this.$api.article.articleList({type:type,row:100,start:0})
         .then((data)=>{
             if(data.code===1){
                 this.articleList = data.data

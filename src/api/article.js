@@ -31,7 +31,12 @@ const article = {
   },
   //点赞
   giveLike(params) {
-    return axios.post(`${base.dev}/article/giveLike`, qs.stringify(params));
+    // return axios.post(`${base.dev}/article/giveLike`, qs.stringify(params));
+    return axios({
+      method: 'post',
+      url:`${base.dev}/article/giveLike`,
+      data: qs.stringify(params)
+    })
   },
   //评论
   commentArticle(params) {

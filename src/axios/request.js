@@ -1,5 +1,4 @@
 import axios from 'axios'; // 引入axios
-import QS from 'qs'; // 引入qs模块，用来序列化post类型的数据
 import store from '@/store';
 import {Message} from 'element-ui' 
 

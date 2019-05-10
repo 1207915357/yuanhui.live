@@ -267,7 +267,9 @@
       const {id,type} = this.$route.query
       this.articleType = type
       this.articleId = id
-      this.getArticleDel(id,type)
+      if(this.articleId){
+        this.getArticleDel(id,type)
+      }
     },
   }
 
