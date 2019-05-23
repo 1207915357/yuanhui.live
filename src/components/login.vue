@@ -38,7 +38,7 @@
       <!-- registerForm -->
       <div class="loginBox">
         <el-dialog title="注册" :visible.sync="dialogFormVisible2">
-          <el-form :model="formRegister" label-width="80px" status-icon :rules="rulesRegister" ref='formRegister' size='small'>
+          <el-form :hide-required-asterisk='true' :model="formRegister" label-width="80px" status-icon :rules="rulesRegister" ref='formRegister' size='small'>
             <el-form-item label="用户" prop="userName">
               <el-input  placeholder="请输入用户名" v-model.trim="formRegister.userName" autocomplete="off"></el-input>
             </el-form-item>
@@ -47,6 +47,9 @@
             </el-form-item>
             <el-form-item label="确认密码" prop="checkPass">
               <el-input type="password" placeholder="请再次输入密码" v-model.trim="formRegister.checkPass" autocomplete="off"></el-input>
+            </el-form-item>
+             <el-form-item label="邮箱" prop="email">
+              <el-input placeholder="请输入邮箱" v-model.trim="formRegister.email" autocomplete="off"></el-input>              
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
@@ -97,6 +100,7 @@
         },
         formRegister: {
           userName: '',
+          email:'',
           password:'',
           checkPass:''
         },
@@ -106,6 +110,10 @@
         },
          rulesRegister: {
           userName: [ { validator: validateName, trigger: 'blur' }],
+          email: [  
+                    { required: true,message: '请输入邮箱地址', trigger: 'blur' },
+                    { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+                ],
           password: [{ validator: validatePass, trigger: 'blur' }],
           checkPass: [{ validator: validatePass2, trigger: 'blur' }],
         }
@@ -166,6 +174,7 @@
             this.dialogFormVisible2 = false
             this.$api.user.register({
               userName:this.formRegister.userName,
+              email:this.formRegister.email,
               password:this.formRegister.password,
             }).then((data)=>{
               console.log(data)
