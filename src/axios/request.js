@@ -7,9 +7,13 @@ import {Message} from 'element-ui'
  * 请求失败后的错误统一处理 
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status, msg) => {
+const errorHandle = (status,msg) => {
   // 失败状态码判断
   switch (status) {
+       case 0:
+         Message.info('请求失败!');
+       break;
+       // 401: 未登录状态，跳转登录页
       case 400:
         Message.info('缺少必要参数!');
         break;
@@ -62,6 +66,7 @@ instance.interceptors.request.use(
   },    
   error => Promise.reject(error))
 
+  
 // 响应拦截器
 instance.interceptors.response.use(    
   // 请求成功
