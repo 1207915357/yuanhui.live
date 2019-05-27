@@ -157,9 +157,10 @@
                 this.$message.info('请先登录!')
                 return
             }
-            this.$api.article.commentArticle({
+            this.$api.comment.commentArticle({
                 userId:this.userId,
                 articleId:this.$route.params.id,
+                articleTitle:this.articleDel.title,
                 content:this.top_formBoxVal,
             }).then(data=>{
                 if(data.code===1){
@@ -188,7 +189,7 @@
                 this.$message.info('请先登录!')
                 return
             }
-            this.$api.article.subCommentArticle({
+            this.$api.comment.subCommentArticle({
                 userId:this.userId,
                 toUserId:toUserId,
                 articleId:this.$route.params.id,

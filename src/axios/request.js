@@ -10,10 +10,6 @@ import {Message} from 'element-ui'
 const errorHandle = (status,msg) => {
   // 失败状态码判断
   switch (status) {
-       case 0:
-         Message.info('请求失败!');
-       break;
-       // 401: 未登录状态，跳转登录页
       case 400:
         Message.info('缺少必要参数!');
         break;
