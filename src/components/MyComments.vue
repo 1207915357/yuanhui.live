@@ -34,7 +34,9 @@
                         <p class="comment-time">{{formatTimeToNow(item.created_time)}}</p>
                     </div>
                     <div class="content">
-                        <p class="content-text">{{item.content}}</p>
+                        <p class="content-text" v-if="item.status==0">{{item.content}}</p>
+                        <p class="content-text statusContent" v-if="item.status==1">该评论涉嫌违规</p>
+                        <p class="content-text statusContent" v-if="item.status==2">该评论已被折叠</p>
                         <el-button @click='replyComment(index)' size='mini' class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                     </div>
                     
@@ -62,7 +64,9 @@
                             </div>
                             <div class="content">
                                 <p class="content-text">回复<i class="reply-user">{{item2.toUser.userName}}:</i></p>
-                                <p class="content-text">{{item2.content}}</p>
+                                <p class="content-text" v-if="item2.status==0">{{item2.content}}</p>
+                                <p class="content-text statusContent" v-if="item2.status==1">该评论涉嫌违规</p>
+                                <p class="content-text statusContent" v-if="item2.status==2">该评论已被折叠</p>
                                 <el-button size='mini' @click="replySubComment(index,index2)" class="replyBtn" circle icon="iconfont icon-liuyan"></el-button>
                             </div>
                             <div id="formBoxId2" class="form-box formBox-sub"  v-show="showSubFormBox&&currentIndex==index&&currentSubIndex==index2">
@@ -323,6 +327,7 @@
                          .content-text{
                              line-height: 32px;
                          }
+                        
                          .reply-user{
                              padding: 0 5px;
                              color:#406599;
@@ -349,5 +354,8 @@
              border-bottom: 1px solid #f1f1f1;
     }
 
-   
+    .statusContent{
+                    color:#ccc;
+                    font-style: italic;
+                }
 </style>
