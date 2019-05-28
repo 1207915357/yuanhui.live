@@ -21,7 +21,7 @@
     </div>
 
     <div class="comments-list">
-        <div class="item" v-for="(item,index) in articleDel.commentList" :key="index">
+        <div class="item" v-for="(item,index) in commentList" :key="index">
             <div class="comment">
                 <div class="comment-avatar">
                     <!-- <img src="" alt=""> -->
@@ -114,6 +114,7 @@
           currentIndex:-1,
           currentSubIndex:-1,
           showSubFormBox:false,
+          commentList:[]
         //   emojiNative:"",
       };
     },
@@ -155,6 +156,20 @@
                 this.currentIndex = index;
                 this.currentSubIndex = index2;
         },
+        //获取评论列表
+        getCommentList(){
+            this.$api.comment.getCommentList({
+                row:1000,
+                start:0,
+                articleId:this.$route.params.id
+            }).then((data)=>{
+                if(data.code==1){
+                    this.commentList = data.data
+                }else{
+                    this.$message.error('服务器错误')
+                }
+            })
+        },
         //评论
         commentArticle(){
             if(!this.userId){
@@ -178,7 +193,8 @@
                         articleId:this.$route.params.id,
                     }
                     this.publishNotice(option)
-                    this.$parent.lookArticleDel(this.$route.params.id)
+                    // this.$parent.lookArticleDel(this.$route.params.id)
+                    this.getCommentList()
                     this.restFormBox()
 
                 }else{
@@ -211,7 +227,8 @@
                         articleId:this.$route.params.id,
                     }
                     this.publishNotice(option)
-                    this.$parent.lookArticleDel(this.$route.params.id)
+                    // this.$parent.lookArticleDel(this.$route.params.id)
+                    this.getCommentList()
                     this.restFormBox()
                 }else{
                     this.$message.error('服务器错误')
@@ -244,7 +261,7 @@
     },
 
     mounted() {
-           
+           this.getCommentList()
     },
 
   }
