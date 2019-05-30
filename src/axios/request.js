@@ -7,37 +7,6 @@ import {Message} from 'element-ui'
  * 请求失败后的错误统一处理 
  * @param {Number} status 请求失败的状态码
  */
-const errorHandle = (status,msg) => {
-  // 失败状态码判断
-  switch (status) {
-      case 400:
-        Message.info('缺少必要参数!');
-        break;
-      // 401: 未登录状态，跳转登录页
-      case 401:
-          // toLogin();
-          Message.info('请登录');
-          break;
-      // 403 token过期
-      // 清除token并跳转登录页
-      case 403:
-          Message.info('登录过期，请重新登录!');
-          setTimeout(() => {
-            localStorage.removeItem('token');
-            store.commit('setToken', null);
-          }, 1000);
-          break;
-      // 404请求不存在
-      case 404:
-          Message.info('请求的资源不存在!'); 
-          break;
-      case 500:
-        Message.info('服务器错误!');
-        break;
-      default:
-          console.log(msg);
-      }}
-
 
 // 创建axios实例
 var instance = axios.create({timeout: 1000 * 12});
@@ -84,6 +53,38 @@ instance.interceptors.response.use(
         console.log('未知错误!')
       }
   });
+
+const errorHandle = (status, msg) => {
+  // 失败状态码判断
+  switch (status) {
+    case 400:
+      Message.info('缺少必要参数!');
+      break;
+      // 401: 未登录状态，跳转登录页
+    case 401:
+      // toLogin();
+      Message.info('请登录');
+      break;
+      // 403 token过期
+      // 清除token并跳转登录页
+    case 403:
+      Message.info('登录过期，请重新登录!');
+      setTimeout(() => {
+        localStorage.removeItem('token');
+        store.commit('setToken', null);
+      }, 1000);
+      break;
+      // 404请求不存在
+    case 404:
+      Message.info('请求的资源不存在!');
+      break;
+    case 500:
+      Message.info('服务器错误!');
+      break;
+    default:
+      console.log(msg);
+  }
+}
 
 export default instance;
 
