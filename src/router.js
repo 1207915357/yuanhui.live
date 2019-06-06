@@ -6,7 +6,7 @@ Vue.use(Router)
 
 
 const router = new Router({
-  mode: 'history',
+  mode: 'history', // hash
   base: process.env.BASE_URL,
   routes: [
     {

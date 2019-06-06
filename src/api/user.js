@@ -4,13 +4,13 @@ import qs from 'qs'; // 根据需求是否导入qs模块
 
 const user = {
     login (params) {        
-        return axios.post(`${base.dev}/login`,qs.stringify(params));    
+        return axios.post(`${base}/login`,qs.stringify(params));    
     },
     register (params) {        
-        return axios.post(`${base.dev}/register`,qs.stringify(params));    
+        return axios.post(`${base}/register`,qs.stringify(params));    
     },
     getUserInfo() {
-       return axios.get(`${base.dev}/getUserInfo`);
+       return axios.get(`${base}/getUserInfo`);
      }
 }
 

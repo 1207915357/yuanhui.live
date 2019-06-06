@@ -852,16 +852,182 @@ markdown中图片的上传
 #### 4.1功能
 
 - 用户管理 , 用户分析 , 流量统计 ,用户权限设置 , 用户评论数分析
-- 文章管理 , 草稿 , 
+
+- 文章管理 , 草稿 , 编辑
+
 - 评论管理 , 审核
+
 - 发布通知
+
 - 标签管理
 
+  ​
 
 
+### 五、ECS服务器部署
+
+> [把Node.js项目部署到阿里云服务器（CentOs）](https://segmentfault.com/a/1190000004051670)
+>
+> [node+mongodb项目部署在服务器](http://biaochenxuying.cn:2019/articleDetail?article_id=5bfa728bb54f044b4f9da240##toc212)
+>
+> [将nodejs项目部署到阿里云ESC服务器,linux系统配置80端口,实现公网IP访问](https://blog.csdn.net/putao2062/article/details/79688020)
+
+1. node 的安装
+
+2. mongoDB 的安装 | 数据备份导入 | mongoDB 基本命令 | 配置环境 更改默认端口 ?? | 连接线上数据库 端口防火墙开放 | 开机启动？启动与关闭 conf文件启动 | 建立密码连接 | 
+
+3. pm2 生产进程管理器 | [可视化监控](https://app.keymetrics.io/#/register)
+
+4. ssl https 证书
+
+5. nginx | nginx.conf 配置 | vue history 配置 | 
+
+   ```nginx
+   #user  nobody;
+   worker_processes  1;
+   #error_log  logs/error.log;
+   #error_log  logs/error.log  notice;
+   #error_log  logs/error.log  info;
+   #pid        logs/nginx.pid;
+   events {
+       worker_connections  1024;
+   }
+   http {
+       include       mime.types;
+       default_type  application/octet-stream;
+       #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+       #                  '$status $body_bytes_sent "$http_referer" '
+       #                  '"$http_user_agent" "$http_x_forwarded_for"';
+       #access_log  logs/access.log  main;
+       sendfile        on;
+       #tcp_nopush     on;
+       #keepalive_timeout  0;
+       keepalive_timeout  65;
+       port_in_redirect off;
+       #后台admin代理      
+       server {
+   		    listen     8888;
+               server_name  localhost;
+               #charset koi8-r;
+               #access_log  logs/host.access.log  main;
+               location / {
+                   root   /home/yuanhui-blog/yuanhui-admin/;
+                   index  index.html index.html;
+                   try_files $uri $uri/ /index.html;
+                   autoindex on;
+               }
+               location @router{
+                   rewrite ^.*$ /index.html last;
+               }
+
+               location /api/ {
+                   proxy_set_header X-Real-IP $remote_addr;
+                   proxy_pass http://106.14.174.233:8888/;
+               }
+               gzip on;
+               gzip_buffers 32 4k;
+               gzip_comp_level 6;
+               gzip_min_length 200;
+               gzip_types text/css text/xml application/javascript;
+               gzip_vary on;
+               #error_page  404              /404.html;
+               # redirect server error pages to the static page /50x.html
+               error_page   500 502 503 504  /50x.html;
+             }
+     #前台代理
+     server {
+    		listen          80;
+           server_name     localhost;
+           location / {
+                   root  /home/yuanhui-blog/yuanhui-live/;
+                   index  index.html index.html;
+                   try_files $uri $uri/ /index.html;
+                   autoindex on;
+           }
+           location @router{
+                   rewrite ^.*$ /index.html last;
+           }
+           location /api/ {
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_pass http://106.14.174.233:80/;
+                   }
+           gzip on;
+           gzip_buffers 32 4k;
+           gzip_comp_level 6;
+           gzip_min_length 200;
+           gzip_types text/css text/xml application/javascript;
+           gzip_vary on;
+           error_page   500 502 503 504  /50x.html;
+           location = /50x.html {
+               root   html;
+           }
+         }
+           # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+           #location ~ \.php$ {
+           #    proxy_pass   http://127.0.0.1;
+     #location ~ \.php$ {
+           #    proxy_pass   http://127.0.0.1;
+           #}
+           # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+           #
+           #location ~ \.php$ {
+           #    root           html;
+           #    fastcgi_pass   127.0.0.1:9000;
+           #    fastcgi_index  index.php;
+           #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+           #    include        fastcgi_params;
+           #}
+           # deny access to .htaccess files, if Apache's document root
+           # concurs with nginx's one
+           #
+           #location ~ /\.ht {
+           #    deny  all;
+           #}
+
+       # another virtual host using mix of IP-, name-, and port-based configuration
+       #
+       #server {
+       #    listen       8000;
+       #    listen       somename:8080;
+       #    server_name  somename  alias  another.alias;
+       #    location / {
+       #        root   html;
+       #        index  index.html index.htm;
+       #    }
+       #}
+       # HTTPS server
+       #
+       #server {
+       #    listen       443 ssl;
+       # HTTPS server
+       #
+       #server {
+       #    listen       443 ssl;
+       #    server_name  localhost;
+       #    ssl_certificate      cert.pem;
+       #    ssl_certificate_key  cert.key;
+       #    ssl_session_cache    shared:SSL:1m;
+       #    ssl_session_timeout  5m;
+       #    ssl_ciphers  HIGH:!aNULL:!MD5;
+       #    ssl_prefer_server_ciphers  on;
+       #    location / {
+       #        root   html;
+       #        index  index.html index.htm;
+       #    }
+       #}
+   }
+   ```
+
+   ​
+
+6. linux | vim 基本命令 | 防火墙 端口开放 | 路由刷新404
+
+7. vue生产环境和开发环境配置
+
+   [vue+node+mongodb部署到服务器的一次实践]()
 
 
-### 五、小程序版本  Taro  mpVue	
+### 六、小程序版本  Taro  mpVue	
 
 
 
@@ -870,49 +1036,125 @@ markdown中图片的上传
 #### 6.1 项目完成进度 
 
 - 2019
+
 - 2.27 完成了文章点赞 git上传
+
 - 2.28 样式优化，滚动条 [Vuescroll.js](https://vuescrolljs.yvescoding.org/zh/)
+
 - 3.01 评论模块 
+
 - 3.06 完成评论功能  
+
 - 3.11 分类,归档,标签功能 
+
 - 3.13 完成归档标签分类功能
+
 - 3.14 添加返回顶部功能 | vuex全局加载Loading动画.
+
 - 3.15 优化loading动画
+
 - 3.18 文章列表接口分页处理 | 滚动加载更多 
+
 - 3.19 文章搜索, siderBar
+
 - 3.25 分类标签词云d3  async的使用
+
 - 3.26 消息通知系统设计
+
 - 4.01 - 4.03 完成评论消息通知功能
+
 - 4.04 优化通知系统
+
 - 4.08 独立通知模块,增加发布文章通知全部用户功能
+
 - 4.09 使用更新器`$inc $push`(原子操作) 优化 mongoDB update 语法 
   -  左侧栏添加最热文章
   -  router-link路由跳转只局部渲染更改了的页面(diff算法),a标签跳转会重新渲染整个页面
   -  路由的滚动 `scrollBehavior`
+
 - 4.10 详情页作者介绍 
+
 - 4.11 添加作者个性化vip身份标识
+
 - 4.15 ...
+
 - 4.16 后台管理搭建 vue-element-admin 了解
+
 - 4.17- 4.18 api添加token认证  |  
   - 如何避免options？（跨域预请求非简单请求是无法避免,可以缓存让它只请求一次）
     设置 Access-Control-Max-Age:86400  // 缓存预检请求
+
 - 4.19 notice通知模块使用vuex优化
+
 - 4.22 添加404页面 | 路由权限
+
 - 4.23  骨架屏搭建 |  401页面
-- 4.24 骨架屏实现
-- ...
-- 5.06 骨架屏实现 (未实现,配置??,bug)
-- 5.07 首页骨架屏实现(创建新项目能实现,再移植到本项目中能实现,不知道之前为什么一直不行!,:哭笑)
-- ​
-- 侧边栏吸顶 | 详情页大纲导航栏 markdown样式 | 图片存储方式 | 响应式 rem vh | 打包部署 | swagger |
-- 微信小程序 |  typeScript 构建 
+
+- 4.24 骨架屏实现-
+
+- ...work
+
+- 5.06 骨架屏实现 (未实现,配置??)
+
+- 5.07 首页骨架屏实现
+
+- 5.08 添加分类category 
+
+  -------------------
+
+- 5.09 后台管理搭建
+
+- 5.10 后台 文章管理 | 发布 | 更新添加字段 | 用户管理 |
+
+- ...work
+
+- 5.23 后台添加发布通知 (一次通知多个用户)
+
+- 5.24 后台评论管理
+
+- 5.27 后台评论管理优化 | 文章筛选 | 分页 | 评论审核 | 评论接口分离
+
+  -  问题： table树的children怎么拿到整个父级的row？ | mongoDB怎么更新一个数组内的一个元素？
+  -  时间格式化优化
+
+- 5.28 前台获取文章评论分离使用单独接口 | 评论删除 | 评论回复 
+
+  - ~~ 新评论通知 （实时跟进用户评论）~~ （待实现）
+
+- 5.29 添加登陆 
+
+- 5.30 添加操作权限 
+
+  - ~~个人中心设置~~(待实现)
+
+
+----
+
+
+
+- 6.3 服务器部署
+- 6.4 服务器部署
+- 6.5 服务器部署
+- 6.6 服务器部署完成
+
+
+- 路由动态渲染原理
+- 百度统计 (PV>100)
+- 首屏渲染,骨架屏优化
+- 详情页大纲导航栏 markdown样式 
+- 图片存储方式 
+- 移动端适配 | 响应式 rem 转换 | vh vw | 媒体查询
+- 打包部署 pm2 | webpack配置 | 单元测试 | 服务器部署环境
+- swagger  | mock 数据
+- 微信小程序 trao mpvue | typeScript 构建 
 - 云服务器
+- scss | less 语法
 
 #### 6.2 遗留bug
 
-- 登陆或注销状态 cookie不能及时刷新
-- 定位 使用vuescroll
-- bug :点击其他地方不能关闭评论框
+- ~~登陆或注销状态 cookie不能及时刷新~~
+- 定位使用vuescroll
+- ~~点击其他地方不能关闭评论框~~
 - 归档：时间划线问题   github 时间选择菜单
 - 菜单导航不根据 路由动态变化   跳转时去掉导航激活状态
 - 详情页代码界面样式需要刷新才加载

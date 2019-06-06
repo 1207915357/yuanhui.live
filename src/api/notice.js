@@ -5,19 +5,19 @@ import qs from 'qs'; // 根据需求是否导入qs模块
 
 const notice = {
     publishNotice(params) {
-        return axios.post(`${base.dev}/notice/publishNotice`,qs.stringify(params));
+        return axios.post(`${base}/notice/publishNotice`,qs.stringify(params));
     },
     noticeAllUser(params) {
-        return axios.post(`${base.dev}/notice/noticeAllUser`, qs.stringify(params));
+        return axios.post(`${base}/notice/noticeAllUser`, qs.stringify(params));
     },
     getNotice(params) {
-        return axios.post(`${base.dev}/notice/getNotice`, qs.stringify(params));
+        return axios.post(`${base}/notice/getNotice`, qs.stringify(params));
     },
     readedNotice(params) {
-        return axios.post(`${base.dev}/notice/readedNotice`, qs.stringify(params));
+        return axios.post(`${base}/notice/readedNotice`, qs.stringify(params));
     },
     clearNotice(params) {
-        return axios.post(`${base.dev}/notice/clearNotice`, qs.stringify(params));
+        return axios.post(`${base}/notice/clearNotice`, qs.stringify(params));
     },
 }
 
