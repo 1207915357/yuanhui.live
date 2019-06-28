@@ -1,20 +1,17 @@
 const path = require('path')
+// const FileManagerPlugin = require('filemanager-webpack-plugin');
 const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, './', dir)
 }
+let ts = Date.parse(new Date());  
 module.exports = {
+  // publicPath: process.env.VUE_APP_URL, // 从 Vue CLI 3.3 起已弃用，改成publicPath
   lintOnSave: false, // 取消eslint代码检测
 
   chainWebpack: config => {
     // 这里是对环境的配置，不同环境对应不同的BASE_API，以便axios的请求地址不同
-    // config.plugin('define').tap(args => {
-    //     const argv = process.argv
-    //     const mode = argv[argv.indexOf('--project-mode') + 1]
-    //     args[0]['process.env'].MODE = `"${mode}"`
-    //     args[0]['process.env'].BASE_API = '"http://47.94.138.75:8000"'
-    //     return args
-    // })
+   
 
     // svg loader
     const svgRule = config.module.rule('svg') // 找到svg-loader
@@ -35,13 +32,35 @@ module.exports = {
       .rule('images')
       .test(/\.(png|jpe?g|gif|svg)(\?.*)?$/)
     //配置alias
-     config.resolve.alias
+     config.resolve.alias 
        .set('@', resolve('src'))
        .set('assets', resolve('src/assets'))
        .set('components', resolve('src/components'))
        .set('static', resolve('src/static'))
-  },
 
+    //配置压缩dist目录成 .zip 文件
+      // if (process.env.VUE_APP_MODE == 'test') {
+      //   config.plugin('compress')
+      //     .use(FileManagerPlugin, [{
+      //       onEnd: {
+      //         delete: [ //首先需要删除项目根目录下的dist.zip
+      //           './*.zip',
+      //         ],
+      //         archive: [ //然后我们选择dist文件夹将之打包成dist.zip并放在根目录
+      //           {
+      //             source: './dist',
+      //             destination: `./biProject-${ts}-production.zip`
+      //           },
+      //           {
+      //             source: './beta',
+      //             destination: `./biProject-${ts}-test.zip`
+      //           }
+      //         ]
+      //       }
+      //     }])
+      // }
+  },
+  //骨架屏配置
   configureWebpack: {
     plugins: [
       new SkeletonWebpackPlugin({
@@ -68,11 +87,11 @@ module.exports = {
 
   //配置端口
   devServer: {
-    // open: process.platform === 'darwin',
+    open: true,  //自动打开浏览器
     // host: '0.0.0.0',
     port: 8888,
     https: false,
-    hotOnly: false,
+    hotOnly: true,
     proxy: null, // 设置代理
     before: app => {}
   },

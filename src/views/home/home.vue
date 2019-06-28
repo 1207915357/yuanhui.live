@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="authorInfo">
-      <siderBar @searchList="searchList" @wordCloudList="getWordCloudList"></siderBar>
+      <siderBar v-if='articleList.length>0' @searchList="searchList" @wordCloudList="getWordCloudList"></siderBar>
     </div>
     <div class="articleBox" >
         <articleBlog v-for="(item,index) in articleList" 

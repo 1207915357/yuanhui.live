@@ -1,7 +1,7 @@
 import axios from 'axios'; // 引入axios
 import store from '@/store';
 import {Message} from 'element-ui' 
-
+import baseUrl from '@/api/base.js'
 
 /** 
  * 请求失败后的错误统一处理 
@@ -11,9 +11,12 @@ import {Message} from 'element-ui'
 // 创建axios实例
 var instance = axios.create({timeout: 1000 * 12});
 // 设置post请求头
-instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 instance.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
+instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// instance.defaults.headers.post['Content-Security-Policy'] = "upgrade - insecure - requests";
 // instance.defaults.withCredentials = true;
+//设置axios请求路径
+instance.defaults.baseURL = baseUrl
 
 /** 
  * 请求拦截器 
