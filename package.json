@@ -16,7 +16,7 @@
     "emoji-mart-vue": "^2.6.6",
     "filemanager-webpack-plugin": "^2.0.5",
     "highlight.js": "^9.14.2",
-    "marked": "^0.6.1",
+    "marked": "^0.7.0",
     "mavon-editor": "^2.6.17",
     "mo-js": "^0.288.2",
     "moment": "^2.24.0",
